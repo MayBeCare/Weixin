@@ -84,6 +84,7 @@ public class Wxjs_Controller {
 		
 		if(month <= 0){
 			int lastyeah = year - 1;
+			month = 12;
 		}
 		
 		List<Wxjs_Record> Wxjs_List =  wxjs_Service.getRecordList();
