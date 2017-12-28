@@ -6,7 +6,7 @@ import com.imooc.entity.Wxjs_Record;
 
 public interface Wxjs_Service {
 	
-	List<Wxjs_Record> getRecordList();
+	List<Wxjs_Record> getRecordList(String k);
 	
 	Wxjs_Record getRecordByDate(String nowDate);
 	

@@ -2,9 +2,12 @@ package com.imooc.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +34,7 @@ public class Wxjs_Controller {
 		
 //		System.out.println(Wxjs_List);
 		
+		/*获取当前打卡时间*/
 		Date date=new Date();  
         DateFormat format=new SimpleDateFormat("yyyy年MM月dd日");  
         String nowDate = format.format(date);
@@ -44,7 +48,7 @@ public class Wxjs_Controller {
         	newStartRecord = new Wxjs_Record();
         	newStartRecord.setId(id);
         	newStartRecord.setClockDate(nowDate);
-        	/*获取当前时间*/
+        	/*获取当前打卡具体时间*/
         	DateFormat startTime=new SimpleDateFormat("HH:mm:ss");  
             String nowStartTime = startTime.format(date);
             
@@ -82,14 +86,54 @@ public class Wxjs_Controller {
 		//当前月为month+1
 		int nowmonth = month + 1;
 		
-		if(month <= 0){
-			int lastyeah = year - 1;
-			month = 12;
+		List<String> list = new ArrayList<String>();
+		String key = "";
+		if(nowmonth < 10){
+			key = year +"年0"+nowmonth+"月";
+		}else{
+			key = year +"年"+nowmonth+"月";
+		}
+		list.add(key);
+		//上一月
+		int lastmonth = nowmonth - 1;
+		
+		if(lastmonth == 0){
+			year = year - 1;
+			lastmonth = 12;
+			key = year +"年"+lastmonth+"月";
+		}else{
+			if(lastmonth < 10){
+				key = year +"年0"+lastmonth+"月";
+			}
+			key = year +"年"+lastmonth+"月";
+		}
+		list.add(key);
+		
+		//上上月
+		int beforemonth = lastmonth - 1;
+		if(beforemonth <= 0){
+			year = year - 1;
+			beforemonth = 12;
+			key = year +"年"+beforemonth+"月";
+		}else{
+			if(beforemonth < 10){
+				key = year +"年0"+beforemonth+"月";
+			}
+			key = year +"年"+beforemonth+"月";
+		}
+		list.add(key);
+		
+		List<Wxjs_Record> Wxjs_List = null;
+		Map<String,Object> map = new HashMap<String,Object>();
+		for (String k : list) {
+			Wxjs_List =  wxjs_Service.getRecordList(k);
+			if(Wxjs_List.size()>0){
+				map.put(k, Wxjs_List);
+			}
 		}
 		
-		List<Wxjs_Record> Wxjs_List =  wxjs_Service.getRecordList();
 		model.addAttribute("id","13000100");
-		model.addAttribute("recordList",Wxjs_List);
+		model.addAttribute("recordList",map);
 		return "/record";
 		
 	}
