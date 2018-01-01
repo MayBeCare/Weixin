@@ -12,9 +12,10 @@
        where clock_date = #{nowDate}
     </select>
     
-    <select id="queryAll" resultType="Wxjs_Record">
+    <select id="queryAll" resultType="Wxjs_Record" parameterType="java.lang.String">
         SELECT *
         FROM card_record
+        where clock_date like '${_parameter}%'
         ORDER BY clock_date desc
     </select>
     

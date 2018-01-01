@@ -6,7 +6,7 @@ import com.imooc.entity.Wxjs_Record;
 
 public interface Wxjs_Dao {
 	
-	List<Wxjs_Record> queryAll();
+	List<Wxjs_Record> queryAll(String k);
 	
 	Wxjs_Record queryByDate(String nowDate);
 	
