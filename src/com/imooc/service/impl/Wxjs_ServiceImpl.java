@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.imooc.dao.Wxjs_Dao;
+import com.imooc.entity.Wxjs_Address;
 import com.imooc.entity.Wxjs_Record;
 import com.imooc.service.Wxjs_Service;
 
@@ -30,6 +31,10 @@ public class Wxjs_ServiceImpl implements Wxjs_Service{
 
 	public int updateRecord(Wxjs_Record updateRecord) {
 		return wxjs_Dao.updateRecord(updateRecord);
+	}
+
+	public List<Wxjs_Address> findCardAddress() {
+		return wxjs_Dao.findAddress();
 	}
 
 }

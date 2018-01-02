@@ -2,6 +2,7 @@ package com.imooc.dao;
 
 import java.util.List;
 
+import com.imooc.entity.Wxjs_Address;
 import com.imooc.entity.Wxjs_Record;
 
 public interface Wxjs_Dao {
@@ -13,5 +14,7 @@ public interface Wxjs_Dao {
 	int addNewRecord(Wxjs_Record newRecord);
 	
 	int updateRecord(Wxjs_Record updateRecord);
+	
+	List<Wxjs_Address> findAddress();
 
 }

@@ -1,13 +1,16 @@
 package com.imooc.controller;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.imooc.entity.Wxjs_Address;
 import com.imooc.entity.Wxjs_Record;
 import com.imooc.service.Wxjs_Service;
 
@@ -28,7 +32,33 @@ public class Wxjs_Controller {
 	@ResponseBody
 	public String main(String latitude,String longitude){
 		
-		System.out.println(latitude  +"......"+longitude);
+		latitude = "39.906647";
+		longitude = "116.447";
+		
+		System.out.println("...纬度..."+latitude  +"...经度..."+longitude);
+		
+		List<Wxjs_Address> addressList = wxjs_Service.findCardAddress();
+		for (Wxjs_Address address : addressList) {
+//			double s = GetDistance(latitude,longitude,address.getLatitude(),address.getLongitude());
+//			double s = getDistance(Double.valueOf(latitude),Double.valueOf(longitude),Double.valueOf(address.getLatitude()),Double.valueOf(address.getLongitude()));
+			double s = getDistance(29.490295,106.486654,29.615467,106.581515);
+			System.out.println(address.getName()+"=======>>>>>>>"+s);
+		}
+		
+		//先计算查询点的经纬度范围  
+        /*double r = 6371;//地球半径千米  
+        double dis = 0.5;//0.5千米距离  
+        double dlng =  2*Math.asin(Math.sin(dis/(2*r))/Math.cos(Double.valueOf(latitude)*Math.PI/180));  
+        dlng = dlng*180/Math.PI;//角度转为弧度  
+        double dlat = dis/r;  
+        dlat = dlat*180/Math.PI;          
+        double minlat = Double.valueOf(latitude)-dlat;  
+        double maxlat = Double.valueOf(latitude)+dlat;  
+        double minlng = Double.valueOf(longitude) -dlng;  
+        double maxlng = Double.valueOf(longitude) + dlng;  
+        
+        System.out.println(minlng+","+maxlng+","+minlat+","+maxlat);*/
+		
 		
 		String id = "13000100";
 		
@@ -132,10 +162,90 @@ public class Wxjs_Controller {
 			}
 		}
 		
+		Map<String, Object> resultMap = sortMapByKey(map);    //按Key进行排序
+		
 		model.addAttribute("id","13000100");
-		model.addAttribute("recordList",map);
+		model.addAttribute("recordList",resultMap);
 		return "/record";
 		
 	}
+	
+	/**
+	 * map按照key排序
+	 * 
+	 * @param map
+	 * @return
+	 */
+	public static Map<String, Object> sortMapByKey(Map<String, Object> map) {
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
 
+        Map<String, Object> returnMap  = new TreeMap<String, Object>(new MapKeyComparator());
+
+        returnMap .putAll(map);
+
+        return returnMap;
+    }
+	
+	
+	//比较器类  
+	public static class MapKeyComparator implements Comparator<String>{
+
+	    public int compare(String str1, String str2) {
+	    	//降序排序
+	        return str2.compareTo(str1);
+	        //升序
+            //return str1.compareTo(str2);
+	    }
+	}
+	
+	/**
+	 * 1. Lng1 Lat1  表示A点经纬度，Lng2 Lat2  表示B点经纬度；
+	   2. a=Lat1 – Lat2 为两点纬度之差  b=Lng1 -Lng2 为两点经度之差；
+	   3. 6378.137为地球半径，单位为千米；
+		计算出来的结果单位为千米。
+	 */
+	public static double GetDistance(String lat1, String lng1, String lat2, String lng2)  {  
+		double EARTH_RADIUS = 6378.137;  
+	    double radLat1 = rad(lat1);  
+	    double radLat2 = rad(lat2);  
+	    double a = radLat1 - radLat2;  
+	    double b = rad(lng1) - rad(lng2);  
+	    double s = 2 * Math.asin(
+	    		            Math.sqrt(
+	    		                 Math.pow(Math.sin(a/2),2) +   
+	                                  Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+	    s = s * EARTH_RADIUS; 
+	    DecimalFormat df = new DecimalFormat("0.00");
+	    System.out.println(df.format(s));
+	    s = Math.round(s * 10000)/10000; 
+
+	    return s; 
+	    
+	}  
+	
+	//把经纬度转为度（°） 
+	private static double rad(String d){  
+	    return Double.valueOf(d) * Math.PI / 180;  
+	}  
+	
+	
+	public static double getDistance( double lat1,double longt1, double lat2, double longt2){
+//		 final double PI = 0 ; //圆周率
+	    final double R = 6378.137;              //地球的半径
+	   
+        double x,y,distance;
+        
+        x=(longt2-longt1)*Math.PI*R*Math.cos( ((lat1+lat2)/2) *Math.PI/180)/180;
+        y=(lat2-lat1)*Math.PI*R/180;
+        distance=Math.hypot(x,y);
+        return distance;
+	}
+	
 }
+
+
+
+
+
