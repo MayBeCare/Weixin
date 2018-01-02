@@ -80,7 +80,9 @@
 		            success:function(data){
                        if(data == "1"){
                     	   alert("获取位置成功");
-                       }
+                       }else if(data == "0"){
+                           alert("距离较远");
+                        }
 		              
 		            },
 			    });

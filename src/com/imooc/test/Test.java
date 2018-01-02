@@ -12,7 +12,7 @@ public class Test {
 		}
 		
 		
-	  System.out.println(Test.GetDistance(29.490295,106.486654,29.615467,106.581515));  
+	  System.out.println(Test.GetDistance(39.92982,116.28769,39.90793,116.45304));  
 	}
 	
 	
@@ -39,7 +39,7 @@ public class Test {
        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +   
         Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));  
        s = s * EARTH_RADIUS;  
-       s = Math.round(s * 1000);  
+//       s = Math.round(s * 1000);  
        return s;  
     }  
 

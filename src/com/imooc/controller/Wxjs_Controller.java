@@ -32,17 +32,27 @@ public class Wxjs_Controller {
 	@ResponseBody
 	public String main(String latitude,String longitude){
 		
-		latitude = "39.906647";
-		longitude = "116.447";
+//		latitude = "39.906647";
+//		longitude = "116.447";
 		
 		System.out.println("...纬度..."+latitude  +"...经度..."+longitude);
 		
+		List<Object> cardList = new ArrayList<Object>();
+		
 		List<Wxjs_Address> addressList = wxjs_Service.findCardAddress();
 		for (Wxjs_Address address : addressList) {
-//			double s = GetDistance(latitude,longitude,address.getLatitude(),address.getLongitude());
+			double s = GetDistance(latitude,longitude,address.getLatitude(),address.getLongitude());
 //			double s = getDistance(Double.valueOf(latitude),Double.valueOf(longitude),Double.valueOf(address.getLatitude()),Double.valueOf(address.getLongitude()));
-			double s = getDistance(29.490295,106.486654,29.615467,106.581515);
 			System.out.println(address.getName()+"=======>>>>>>>"+s);
+			if(s < 0.5){
+				cardList.add("1");	
+			}else{
+				cardList.add("0");	
+			}
+		}
+		
+		if(!cardList.contains("1")){
+			return "0";
 		}
 		
 		//先计算查询点的经纬度范围  
@@ -217,9 +227,11 @@ public class Wxjs_Controller {
 	    		                 Math.pow(Math.sin(a/2),2) +   
 	                                  Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
 	    s = s * EARTH_RADIUS; 
-	    DecimalFormat df = new DecimalFormat("0.00");
-	    System.out.println(df.format(s));
-	    s = Math.round(s * 10000)/10000; 
+	    
+//	    DecimalFormat df = new DecimalFormat("0.00");
+//	    System.out.println(df.format(s));
+	    
+//	    s = Math.round(s * 10000)/10000; 
 
 	    return s; 
 	    
