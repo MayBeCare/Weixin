@@ -12,6 +12,9 @@
 		<script type="text/javascript" src="<%=basePath%>js/jquery-1.11.1.min.js"></script>
 		<title>微信js_sdk</title>
 	</head>
+ <style>
+   .date_time{text-align:center;color:#39867e;font-family:Verdana, Arial, Helvetica, sans-serif;}
+ </style>
 	<body>
 	    <%  
 	        String appId = (String)request.getAttribute("appId"); 
@@ -30,7 +33,11 @@
         </p>
         <p>提交时的签名为：  
             <%=signature %>  
-        </p>   
+        </p> 
+        <div class="date_time">
+          <p id="inn_time"></p> 
+          <p id="inn_date"></p> 
+        </div>
 	  <script type="text/javascript">
 	    wx.config({
 	        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -52,6 +59,8 @@
 	        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 	    });
 	    
+	    
+	    //获取位置并打卡
 	    function getAdress(){
 	    	wx.getLocation({
 	    		type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
@@ -79,6 +88,7 @@
 	      });
 	    }
 	    
+	    //选择图片
 	    function chooseImage(){
 	    	wx.chooseImage({
 	    		count: 1, // 默认9
@@ -90,10 +100,68 @@
 	      });
 	    }
 	    
+	    //查看打卡记录
 	    function findRecord(){
 	    	window.location.href = "findRecord";
 	    }
-	  </script>
+	    
+	    
+	    //页面显示实时时间
+		function dateTime() {
+			var inn_time = document.getElementById('inn_time');
+			var inn_date = document.getElementById('inn_date');
+			
+			var date = new Date();
+
+			var month = date.getMonth() + 1;
+			var year = date.getFullYear();
+			var day = date.getDate();
+			var week = date.getDay();
+			var hour = date.getHours();
+			var min = date.getMinutes();
+			var sec = date.getSeconds();
+			
+			if(min < 10){
+				min = "0"+min;
+			  }
+			if(sec < 10){
+				sec = "0"+sec;
+			  }
+			
+			var week1;
+			switch (week) {
+			case 0:
+				week1 = '星期日';
+				break;
+			case 1:
+				week1 = '星期一';
+				break;
+			case 2:
+				week1 = '星期二';
+				break;
+			case 3:
+				week1 = '星期三';
+				break;
+			case 4:
+				week1 = '星期四';
+				break;
+			case 5:
+				week1 = '星期五';
+				break;
+			case 6:
+				week1 = '星期六';
+				break;
+			}
+			inn_time.innerHTML =  hour + ':' + min + ':' + sec;
+			
+			inn_date.innerHTML = year + '年' + month + '月' + day + '日 &nbsp;'  + week1 ;
+			
+			setTimeout(dateTime, 1000);
+		}
+	    
+		dateTime();
+		
+	 </script>
 	    
 	    
 	    <button onclick = "getAdress();">获取当前位置打卡</button>

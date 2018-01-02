@@ -32,6 +32,11 @@
        set end_time = #{endTime}
        where clock_date = #{clockDate}
     </update>
+    
+    <select id="findAddress" resultType="Wxjs_Address">
+        select * 
+        from card_address
+    </select>
  
 </mapper>
 

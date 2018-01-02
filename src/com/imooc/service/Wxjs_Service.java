@@ -2,6 +2,7 @@ package com.imooc.service;
 
 import java.util.List;
 
+import com.imooc.entity.Wxjs_Address;
 import com.imooc.entity.Wxjs_Record;
 
 public interface Wxjs_Service {
@@ -13,5 +14,7 @@ public interface Wxjs_Service {
 	int addNewRecord(Wxjs_Record newRecord);
 	
 	int updateRecord(Wxjs_Record updateRecord);
+	
+	List<Wxjs_Address> findCardAddress();
 
 }
