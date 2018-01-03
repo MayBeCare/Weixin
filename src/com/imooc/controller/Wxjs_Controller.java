@@ -1,5 +1,6 @@
 package com.imooc.controller;
 
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -12,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,8 @@ import com.imooc.service.Wxjs_Service;
 
 @Controller
 public class Wxjs_Controller {
+	
+	private final static Logger logger = LoggerFactory.getLogger(Wxjs_Controller.class);
 	
 	@Autowired
     private Wxjs_Service wxjs_Service;
@@ -43,8 +48,9 @@ public class Wxjs_Controller {
 		for (Wxjs_Address address : addressList) {
 			double s = GetDistance(latitude,longitude,address.getLatitude(),address.getLongitude());
 //			double s = getDistance(Double.valueOf(latitude),Double.valueOf(longitude),Double.valueOf(address.getLatitude()),Double.valueOf(address.getLongitude()));
-			System.out.println(address.getName()+"=======>>>>>>>"+s);
-			if(s < 0.5){
+//			System.out.println(address.getName()+"=======>>>>>>>"+s);
+			logger.info("{}=======>>>>>>{}", address.getName(),s);
+			if(s <= 0.5){
 				cardList.add("1");	
 			}else{
 				cardList.add("0");	
@@ -228,10 +234,12 @@ public class Wxjs_Controller {
 	                                  Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
 	    s = s * EARTH_RADIUS; 
 	    
-//	    DecimalFormat df = new DecimalFormat("0.00");
-//	    System.out.println(df.format(s));
-	    
 //	    s = Math.round(s * 10000)/10000; 
+	    
+	    //保留两位(不四舍五入)
+	    DecimalFormat formater = new DecimalFormat("#0.##");
+		formater.setRoundingMode(RoundingMode.FLOOR);
+		s = Double.valueOf(formater.format(s));
 
 	    return s; 
 	    

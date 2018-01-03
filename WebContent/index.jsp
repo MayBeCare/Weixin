@@ -63,7 +63,7 @@
 	    //获取位置并打卡
 	    function getAdress(){
 	    	wx.getLocation({
-	    		type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+	    		type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
 	    		success: function (res) {
 	    		var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
 	    		var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
@@ -76,7 +76,13 @@
 		            data:{
 		              "latitude":latitude,
 		              "longitude":longitude,
-		            },  
+		            },
+		            beforeSend:function(){ 
+			           $("#loading").show();
+			          },
+			        complete: function () {
+			           $("#loading").hide();
+			         }, 
 		            success:function(data){
                        if(data == "1"){
                     	   alert("获取位置成功");
@@ -169,6 +175,10 @@
 	    <button onclick = "getAdress();">获取当前位置打卡</button>
 	    <button onclick = "chooseImage();">选择图片</button>
 	    <button onclick = "findRecord();">查看打卡记录</button>
+	    
+	    <div id="loading" style="display:none;text-align: center; ">
+		 <img style="width:50px;" src="<%=basePath%>image/load.gif" />
+	   </div>
 	    
 	</body>
 </html>

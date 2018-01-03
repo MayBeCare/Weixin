@@ -1,5 +1,8 @@
 package com.imooc.test;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class Test {
 	
 	public static void main(String[] args) {
@@ -10,6 +13,10 @@ public class Test {
 		if(time <= 0){
 			System.out.println("ÉúÐ§");
 		}
+		
+		DecimalFormat formater = new DecimalFormat("#0.##");
+		formater.setRoundingMode(RoundingMode.FLOOR);
+		System.out.println(formater.format(14.310687662731988));
 		
 		
 	  System.out.println(Test.GetDistance(39.92982,116.28769,39.90793,116.45304));  

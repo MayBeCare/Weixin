@@ -10,10 +10,10 @@
 
 
    <!-- 日志级别 -->  
-    <!-- <root>
-        <level value="debug"/>  
+    <root>
+        <level value="info"/>  
         <appender-ref ref="STDOUT" />
-    </root> -->
+    </root>
     
     <!-- 指定到包 -->
     <logger name="com.imooc.dao" additivity="false">  
