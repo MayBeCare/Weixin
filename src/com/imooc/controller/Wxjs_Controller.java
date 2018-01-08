@@ -233,9 +233,10 @@ public class Wxjs_Controller {
 	    		                 Math.pow(Math.sin(a/2),2) +   
 	                                  Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
 	    s = s * EARTH_RADIUS; 
-	    
+//	    logger.info("相差公里数为<<<<<<>>>>>>>>>{}公里", s);
 //	    s = Math.round(s * 10000)/10000; 
-	    
+//	    s = s * 1000;     //转化成米
+//	    logger.info("相差米数为<<<<<<>>>>>>>>>{}米", s);
 	    //保留两位(不四舍五入)
 	    DecimalFormat formater = new DecimalFormat("#0.##");
 		formater.setRoundingMode(RoundingMode.FLOOR);
