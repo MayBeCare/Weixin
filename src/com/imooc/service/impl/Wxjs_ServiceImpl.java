@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.imooc.dao.Wxjs_Dao;
 import com.imooc.entity.Wxjs_Address;
 import com.imooc.entity.Wxjs_Record;
+import com.imooc.entity.Wxjs_Ticket;
+import com.imooc.entity.Wxjs_User;
 import com.imooc.service.Wxjs_Service;
 
 @Service("Wxjs_Service")
@@ -16,9 +18,8 @@ public class Wxjs_ServiceImpl implements Wxjs_Service{
 	@Autowired 
     private Wxjs_Dao wxjs_Dao;
 
-	public List<Wxjs_Record> getRecordList(String k) {
-		
-		return wxjs_Dao.queryAll(k);
+	public List<Wxjs_Record> getRecordList(String k,String id) {
+		return wxjs_Dao.queryAll(k,id);
 	}
 
 	public Wxjs_Record getRecordByDate(String nowDate) {
@@ -35,6 +36,26 @@ public class Wxjs_ServiceImpl implements Wxjs_Service{
 
 	public List<Wxjs_Address> findCardAddress() {
 		return wxjs_Dao.findAddress();
+	}
+
+	public Wxjs_User findByOpenId(String openId) {
+		return wxjs_Dao.findByOpenId(openId);
+	}
+
+	public int updateUser(Wxjs_User user) {
+		return wxjs_Dao.updateUser(user);
+	}
+
+	public Wxjs_Ticket findTicket() {
+		return wxjs_Dao.findTicket();
+	}
+
+	public int deleteTicket(String id) {
+		return wxjs_Dao.deleteTicket(id);
+	}
+
+	public int addNewTicket(Wxjs_Ticket ticket) {
+		return wxjs_Dao.addNewTicket(ticket);
 	}
 
 }

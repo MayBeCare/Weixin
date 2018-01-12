@@ -3,12 +3,15 @@ package com.imooc.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.dom4j.DocumentException;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import com.imooc.util.CheckUtil;
 import com.imooc.util.MessageUtil;
 import com.imooc.util.WeixinUtil;
@@ -16,11 +19,11 @@ import com.imooc.util.WeixinUtil;
 @WebServlet("/wx")
 public class WeixinServlet extends HttpServlet{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	public void init(ServletConfig config) throws ServletException {  
+	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());  
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
@@ -59,16 +62,16 @@ public class WeixinServlet extends HttpServlet{
 			String toUserName = map.get("ToUserName");
 			String msgType = map.get("MsgType");
 			String content = map.get("Content");
-			String msgId = map.get("MsgId");
-			String picUrl = map.get("PicUrl");
-			String mediaId = map.get("MediaId");
-			String format = map.get("Format");
-			System.out.println(picUrl);
-			System.out.println(mediaId);
-			System.out.println(format);
-			System.out.println("消息类型为======>>>>>>>>>>>"+msgType);
-			System.out.println("消息内容为======>>>>>>>>>>>"+content);
-			System.out.println("消息ID为======>>>>>>>>>>>"+msgId);
+//			String msgId = map.get("MsgId");
+//			String picUrl = map.get("PicUrl");
+//			String mediaId = map.get("MediaId");
+//			String format = map.get("Format");
+//			System.out.println(picUrl);
+//			System.out.println(mediaId);
+//			System.out.println(format);
+//			System.out.println("消息类型为======>>>>>>>>>>>"+msgType);
+//			System.out.println("消息内容为======>>>>>>>>>>>"+content);
+//			System.out.println("消息ID为======>>>>>>>>>>>"+msgId);
 			String msg = null;
 			if (MessageUtil.MSGTYPE_TEXT.equals(msgType)) {            //文本消息
 				if("1".equals(content)){
@@ -109,8 +112,10 @@ public class WeixinServlet extends HttpServlet{
  					msg = MessageUtil.initText(toUserName, fromUserName, MessageUtil.mainMenu());
  				}else if(MessageUtil.EVENT_VIEW.equals(eventType)){   // 跳转URL用户点击view
 					String url = map.get("EventKey");
-					System.out.println("======<<<<<<<<<>>>>>>>>>" + url);
+					
+//					System.out.println("======<<<<<<<<<>>>>>>>>>" + url);
 					msg = MessageUtil.initText(toUserName, fromUserName, url);
+					
 				}else if(MessageUtil.EVENT_SCANCODE_PUSH.equals(eventType)){ //扫码事件
 					String key = map.get("EventKey");
 					msg = MessageUtil.initText(toUserName, fromUserName, key);
@@ -125,7 +130,7 @@ public class WeixinServlet extends HttpServlet{
 				String voiceMediaId = map.get("MediaId");
 				msg = MessageUtil.replyVoiceMessage(toUserName, fromUserName,voiceMediaId);
 			}
-			System.out.println(msg);
+//			System.out.println(msg);
 			writer.print(msg);            //返回给微信后台
 		} catch (DocumentException e) {
 			e.printStackTrace();

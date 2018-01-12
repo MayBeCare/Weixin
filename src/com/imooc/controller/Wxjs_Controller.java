@@ -1,5 +1,6 @@
 package com.imooc.controller;
 
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -12,7 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
+import javax.servlet.http.HttpServletRequest;
+import org.apache.http.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.imooc.entity.Wxjs_Address;
 import com.imooc.entity.Wxjs_Record;
+import com.imooc.entity.Wxjs_User;
 import com.imooc.service.Wxjs_Service;
+import com.imooc.util.WeixinUtil;
+
+import net.sf.json.JSONObject;
 
 @Controller
 public class Wxjs_Controller {
@@ -33,15 +40,18 @@ public class Wxjs_Controller {
 	@Autowired
     private Wxjs_Service wxjs_Service;
 	
+	/**
+	 * 进行打卡
+	 * @param latitude
+	 * @param longitude
+	 * @return
+	 */
 	@RequestMapping(value="/showLocation")
 	@ResponseBody
-	public String main(String latitude,String longitude){
-		
-//		latitude = "39.906647";
-//		longitude = "116.447";
+	public String main(String latitude,String longitude,String openId){
 		
 		System.out.println("...纬度..."+latitude  +"...经度..."+longitude);
-		
+		logger.info("=======>>>>>>{}", openId);
 		List<Object> cardList = new ArrayList<Object>();
 		
 		List<Wxjs_Address> addressList = wxjs_Service.findCardAddress();
@@ -60,25 +70,9 @@ public class Wxjs_Controller {
 		if(!cardList.contains("1")){
 			return "0";
 		}
-		
-		//先计算查询点的经纬度范围  
-        /*double r = 6371;//地球半径千米  
-        double dis = 0.5;//0.5千米距离  
-        double dlng =  2*Math.asin(Math.sin(dis/(2*r))/Math.cos(Double.valueOf(latitude)*Math.PI/180));  
-        dlng = dlng*180/Math.PI;//角度转为弧度  
-        double dlat = dis/r;  
-        dlat = dlat*180/Math.PI;          
-        double minlat = Double.valueOf(latitude)-dlat;  
-        double maxlat = Double.valueOf(latitude)+dlat;  
-        double minlng = Double.valueOf(longitude) -dlng;  
-        double maxlng = Double.valueOf(longitude) + dlng;  
-        
-        System.out.println(minlng+","+maxlng+","+minlat+","+maxlat);*/
-		
-		
-		String id = "13000100";
-		
-//		System.out.println(Wxjs_List);
+
+		Wxjs_User user = wxjs_Service.findByOpenId(openId);
+//		String id = "13000100";
 		
 		/*获取当前打卡时间*/
 		Date date=new Date();  
@@ -89,10 +83,10 @@ public class Wxjs_Controller {
         Wxjs_Record newEndRecord = null;
         
         Wxjs_Record wxjs_Record = wxjs_Service.getRecordByDate(nowDate);   
-//        System.out.println(wxjs_Record);
+        
         if(wxjs_Record == null){                         //当前未打卡
         	newStartRecord = new Wxjs_Record();
-        	newStartRecord.setId(id);
+        	newStartRecord.setId(user.getUserCode());
         	newStartRecord.setClockDate(nowDate);
         	/*获取当前打卡具体时间*/
         	DateFormat startTime=new SimpleDateFormat("HH:mm:ss");  
@@ -111,17 +105,17 @@ public class Wxjs_Controller {
             newEndRecord.setEndTime(nowEndTime);
             wxjs_Service.updateRecord(newEndRecord);
         }
-        
-//        Wxjs_Record wxjs_Record1 = wxjs_Service.getRecordByDate(nowDate);
-//        System.out.println(wxjs_Record1);
-        
 		
 		return "1";
 		
 
 	}
 	
-	
+	/**
+	 * 查看打卡记录
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/findRecord")
 	public String findRecord(Model model){
 		
@@ -170,9 +164,10 @@ public class Wxjs_Controller {
 		list.add(key);
 		
 		List<Wxjs_Record> Wxjs_List = null;
+		String id = "13000100";
 		Map<String,Object> map = new HashMap<String,Object>();
 		for (String k : list) {
-			Wxjs_List =  wxjs_Service.getRecordList(k);
+			Wxjs_List =  wxjs_Service.getRecordList(k,id);
 			if(Wxjs_List.size()>0){
 				map.put(k, Wxjs_List);
 			}
@@ -183,6 +178,56 @@ public class Wxjs_Controller {
 		model.addAttribute("id","13000100");
 		model.addAttribute("recordList",resultMap);
 		return "/record";
+		
+	}
+	
+	/**
+	 * 判断用户和微信是否已绑定
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	@RequestMapping("/showLogin")
+	public String showLogin(HttpServletRequest request,Model model,RedirectAttributes attr) throws ParseException, IOException{
+		
+		String code = request.getParameter("code");
+		
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
+                + "appid=" + WeixinUtil.APPID
+                + "&secret=" + WeixinUtil.APPSECRET
+                + "&code=" + code
+                + "&grant_type=authorization_code";
+		
+		JSONObject jsonObject = WeixinUtil.doGetStr(url);
+//		System.out.println("<><><><><><><><>"+jsonObject);
+		String openId = jsonObject.getString("openid");
+//		String openId = "oNBaExOt67SzKoTQ0mkTwSwxcymo";
+		
+		Wxjs_User user  = wxjs_Service.findByOpenId(openId);
+		if(user == null){
+			model.addAttribute("openId",openId);
+			return "/login";             //到页面
+		}
+		
+		attr.addAttribute("openId", openId);
+		
+		return "redirect:/wxjs_sdk";     //跳转到方法
+		
+	}
+	
+	
+	/**
+	 * 用户登录
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("/userLogin")
+	@ResponseBody
+	public String userLogin(Wxjs_User user){
+		int a = wxjs_Service.updateUser(user);
+		return String.valueOf(a);
 		
 	}
 	

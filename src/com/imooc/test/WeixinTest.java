@@ -17,19 +17,22 @@ public class WeixinTest {
 //			String mediaId = WeixinUtil.upload(path, token.getToken(), "thumb");  //thumb
 //			System.out.println(mediaId);
 //			
-//			String menu = JSONObject.fromObject(WeixinUtil.initMenu()).toString();
-//			int result = WeixinUtil.createMenu(token.getToken(), menu);
-//			if(result == 0){
-//				System.out.println("创建菜单成功");
-//			}else{
-//				System.out.println("错误码:"+result);
-//			}
+			String menu = JSONObject.fromObject(WeixinUtil.initMenu()).toString();
+			int result = WeixinUtil.createMenu(token.getToken(), menu);
+			if(result == 0){
+				System.out.println("创建菜单成功");
+			}else{
+				System.out.println("错误码:"+result);
+			}
 			
 //			JSONObject jsonObject = WeixinUtil.queryMenu(token.getToken());
 //			System.out.println(jsonObject);
 			
 //			String result = WeixinUtil.translate("百度翻译");
 //			System.out.println(result);
+			
+//			JSONObject jsonObject = WeixinUtil.getUserInfo(token.getToken(),"oNBaExOt67SzKoTQ0mkTwSwxcymo");
+//			System.out.println(jsonObject);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

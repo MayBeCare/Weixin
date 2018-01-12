@@ -14,6 +14,18 @@
 	</head>
  <style>
    .date_time{text-align:center;color:#39867e;font-family:Verdana, Arial, Helvetica, sans-serif;}
+   button {
+	    background-color: #4CAF50; /* Green */
+	    border: none;
+	    color: white;
+	    padding: 15px 30px;
+	    margin-right: 10px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 16px;
+	    border-radius: 20px;
+     }
  </style>
 	<body>
 	    <%  
@@ -21,8 +33,9 @@
             String date = (String)request.getAttribute("time"); 
 	        String nonceStr = (String)request.getAttribute("nonceStr"); 
 	        String signature = (String)request.getAttribute("signature"); 
+	        String openId = (String)request.getAttribute("openId");
         %>
-        <p>提交时的appId为：  
+        <%-- <p>提交时的appId为：  
             <%=appId %>  
         </p> 
         <p>提交时的系统时间为：  
@@ -33,6 +46,9 @@
         </p>
         <p>提交时的签名为：  
             <%=signature %>  
+        </p>--%>
+        <p><!-- 提交时的OpenId为： -->  
+            <input id="openid" value = "<%=openId %>" style="display: none"/>  
         </p> 
         <div class="date_time">
           <p id="inn_time"></p> 
@@ -62,6 +78,9 @@
 	    
 	    //获取位置并打卡
 	    function getAdress(){
+	    	
+	    	var openid = $("#openid").val();
+	    	
 	    	wx.getLocation({
 	    		type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
 	    		success: function (res) {
@@ -76,6 +95,7 @@
 		            data:{
 		              "latitude":latitude,
 		              "longitude":longitude,
+		              "openId":openid
 		            },
 		            beforeSend:function(){ 
 			           $("#loading").show();
@@ -171,14 +191,15 @@
 		
 	 </script>
 	    
-	    
-	    <button onclick = "getAdress();">获取当前位置打卡</button>
-	    <button onclick = "chooseImage();">选择图片</button>
-	    <button onclick = "findRecord();">查看打卡记录</button>
+	    <div style="text-align: center; ">
+		    <button onclick = "getAdress();">获取位置打卡</button>
+		    <!-- <button onclick = "chooseImage();">选择图片</button> -->
+		    <button onclick = "findRecord();">查看打卡记录</button>
+	    </div>
 	    
 	    <div id="loading" style="display:none;text-align: center; ">
 		 <img style="width:50px;" src="<%=basePath%>image/load.gif" />
-	   </div>
+	    </div>
 	    
 	</body>
 </html>

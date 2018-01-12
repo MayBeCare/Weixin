@@ -12,10 +12,11 @@
        where clock_date = #{nowDate}
     </select>
     
-    <select id="queryAll" resultType="Wxjs_Record" parameterType="java.lang.String">
+    <select id="queryAll" resultType="Wxjs_Record" >
         SELECT *
         FROM card_record
-        where clock_date like '${_parameter}%'
+        where clock_date like '${clockDate}%'
+        and id = #{id}
         ORDER BY clock_date desc
     </select>
     
@@ -37,6 +38,33 @@
         select * 
         from card_address
     </select>
+    
+    <select id="findByOpenId"  resultType="Wxjs_User" parameterType="java.lang.String">
+       select * from card_user
+       where openid = #{_parameter}
+    </select>
+    
+    <update id="updateUser" parameterType="Wxjs_User">
+      update card_user
+      set openid = #{openId}
+      where usercode = #{userCode}
+        and userpassword = #{userPassWord} 
+    </update>
+    
+    <select id="findTicket" resultType="Wxjs_Ticket" >
+       select * from card_ticket
+    </select>
+    
+    <delete id="deleteTicket" parameterType="java.lang.String" >
+       delete from card_ticket where id = #{_parameter}
+    </delete>
+    
+    <insert id="addNewTicket" parameterType="Wxjs_Ticket">
+      insert into card_ticket
+      (id,ticket,time)
+      values
+      (#{id},#{ticket},#{time})
+    </insert>
  
 </mapper>
 

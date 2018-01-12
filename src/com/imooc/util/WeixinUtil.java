@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -44,8 +45,8 @@ public class WeixinUtil {
 //	private static final String APPID = "wx811a35ce636e0234";
 //	private static final String APPSECRET = "71ecefb123d08f7097dea02cf2bd05a3";
 	
-	private static final String APPID = "wx0fd51bf2fc843efb";
-	private static final String APPSECRET = "bb1fd7bba658544573040dc852c96c63";
+	public static final String APPID = "wx0fd51bf2fc843efb";
+	public static final String APPSECRET = "bb1fd7bba658544573040dc852c96c63";
 	
 	private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	
@@ -56,6 +57,10 @@ public class WeixinUtil {
 	private static final String QUERY_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
 	
 	private static final String DELETE_MENU_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
+	
+	private static final String USER_INFO = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID";
+	
+	private static final String USER_LOGIN_URL = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/showLogin";
 	
 	/*
 	 * 百度翻译
@@ -233,7 +238,15 @@ public class WeixinUtil {
 		button21.setName("view菜单");
 		button21.setType("view");
 //		button21.setUrl("http://www.imooc.com");
-		button21.setUrl("http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk");
+//		button21.setUrl("http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk");
+		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?"
+                + "appid=" + APPID
+                + "&redirect_uri=" + URLEncoder.encode(USER_LOGIN_URL) 
+                + "&response_type=code"
+                + "&scope=snsapi_userinfo"
+                + "&state=STATE"
+                + "#wechat_redirect";
+		button21.setUrl(url);
 		
 		ClickButton button31 = new ClickButton();
 		button31.setName("扫码事件");
@@ -277,6 +290,13 @@ public class WeixinUtil {
 			result = jsonObject.getInt("errcode");
 		}
 		return result;
+	}
+	
+	public static JSONObject getUserInfo(String token,String openId) throws ParseException, IOException{
+		String url = USER_INFO.replace("ACCESS_TOKEN", token).replace("OPENID", openId);
+		JSONObject jsonObject = doGetStr(url);
+		return jsonObject;
+		
 	}
 	
 	public static String translate(String query) {
