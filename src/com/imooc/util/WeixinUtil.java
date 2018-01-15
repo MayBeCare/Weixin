@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -226,8 +227,9 @@ public class WeixinUtil {
 	/**
 	 * 组装菜单
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static Menu initMenu(){
+	public static Menu initMenu() throws UnsupportedEncodingException{
 		Menu menu = new Menu();
 		ClickButton button11 = new ClickButton();
 		button11.setName("click菜单");
@@ -241,7 +243,7 @@ public class WeixinUtil {
 //		button21.setUrl("http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk");
 		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?"
                 + "appid=" + APPID
-                + "&redirect_uri=" + URLEncoder.encode(USER_LOGIN_URL) 
+                + "&redirect_uri=" + URLEncoder.encode(USER_LOGIN_URL,"utf-8") 
                 + "&response_type=code"
                 + "&scope=snsapi_userinfo"
                 + "&state=STATE"
@@ -309,6 +311,30 @@ public class WeixinUtil {
         String dst = transResult.getDst();
         System.out.println(dst);
 		return dst;
+	}
+	
+	
+	/**
+	 *  根据code获取用户的openid
+	 * @param code
+	 * @return
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	public static String getOpenId(String code) throws ParseException, IOException{
+		
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
+                + "appid=" + APPID
+                + "&secret=" + APPSECRET
+                + "&code=" + code
+                + "&grant_type=authorization_code";
+		
+		JSONObject jsonObject = WeixinUtil.doGetStr(url);
+		
+		String openId = jsonObject.getString("openid");
+		
+		return openId;
+		
 	}
 	
 }

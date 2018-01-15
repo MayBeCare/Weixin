@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,6 +21,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.imooc.entity.AccessToken;
@@ -28,11 +30,12 @@ import com.imooc.service.Wxjs_Service;
 
 import net.sf.json.JSONObject;
 
-@WebServlet("/wxjs_sdk")
-public class WeiXinJs_SDKServlet extends HttpServlet {
+//@WebServlet("/wxjs_sdk")
+@Component
+public class WeiXinJs_SDKServlet /*extends HttpServlet*/{
 
 	private static final long serialVersionUID = 1L;
-	private static final String APPID = "wx0fd51bf2fc843efb";
+	public static final String APPID = "wx0fd51bf2fc843efb";
 	private static final String APPSECRET = "bb1fd7bba658544573040dc852c96c63";
 	private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private static final String jsapi_ticket_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
@@ -41,8 +44,16 @@ public class WeiXinJs_SDKServlet extends HttpServlet {
 	
 	@Autowired
     private Wxjs_Service wxjs_Service;
+	
+	private static WeiXinJs_SDKServlet weiXinJsUtil;
+	
+	 @PostConstruct  
+     public void init() {           //静态方法里面使用注入的Service 
+		 weiXinJsUtil = this; 
+		 weiXinJsUtil.wxjs_Service = this.wxjs_Service; 
+     } 
 
-	public void init(ServletConfig config) throws ServletException {  
+/*	public void init(ServletConfig config) throws ServletException {  
 	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());  
 	}
 
@@ -78,7 +89,7 @@ public class WeiXinJs_SDKServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		super.doGet(req, resp);
-	}
+	}*/
 	
 	/**
 	 * 生成指定个数的随机数
@@ -147,17 +158,17 @@ public class WeiXinJs_SDKServlet extends HttpServlet {
 	 * @throws ParseException
 	 * @throws IOException
 	 */
-	public  String getJsTicket() throws ParseException, IOException{
+	public static String getJsTicket() throws ParseException, IOException{
 		//查询ticket
-		Wxjs_Ticket wt = wxjs_Service.findTicket();
+		Wxjs_Ticket wt = weiXinJsUtil.wxjs_Service.findTicket();
 		
 		if(wt != null){
 			long nowTime = System.currentTimeMillis();
 			
-			if(nowTime - wt.getTime() < 7000*1000){
+			if(nowTime - wt.getTime() < 7000*1000){          //判断是否已过期
 				return wt.getTicket();	
 			}
-			wxjs_Service.deleteTicket(wt.getId());
+			weiXinJsUtil.wxjs_Service.deleteTicket(wt.getId());
 		}
 		
 		String ticket = "";
@@ -176,7 +187,7 @@ public class WeiXinJs_SDKServlet extends HttpServlet {
 		newTicket.setId(id);
 		newTicket.setTicket(ticket);
 		newTicket.setTime(creTime);
-		wxjs_Service.addNewTicket(newTicket);
+		weiXinJsUtil.wxjs_Service.addNewTicket(newTicket);
 		
 		logger.info("执行了token=====>>>>>>>>>{}",ticket);
 		

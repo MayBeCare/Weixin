@@ -18,8 +18,8 @@ public class Wxjs_ServiceImpl implements Wxjs_Service{
 	@Autowired 
     private Wxjs_Dao wxjs_Dao;
 
-	public List<Wxjs_Record> getRecordList(String k,String id) {
-		return wxjs_Dao.queryAll(k,id);
+	public List<Wxjs_Record> getRecordList(String time,String openId) {
+		return wxjs_Dao.queryAll(time,openId);
 	}
 
 	public Wxjs_Record getRecordByDate(String nowDate) {

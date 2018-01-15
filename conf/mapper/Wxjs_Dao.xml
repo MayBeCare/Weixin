@@ -14,9 +14,10 @@
     
     <select id="queryAll" resultType="Wxjs_Record" >
         SELECT *
-        FROM card_record
-        where clock_date like '${clockDate}%'
-        and id = #{id}
+        FROM card_record  r
+        LEFT JOIN card_user u on r.id = u.usercode
+        where r.clock_date like '${clockDate}%'
+        and u.openid = #{openId}
         ORDER BY clock_date desc
     </select>
     

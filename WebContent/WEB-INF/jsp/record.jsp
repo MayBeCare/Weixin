@@ -30,7 +30,9 @@
 	.top img:nth-of-type(2){right:20px;top:10px;} 
 </style>
 <body>
-	<h2>${id}的打卡记录</h2>
+	<c:if test="${userName != ''}">
+		<h2>${userName}的打卡记录</h2>
+	</c:if>
 	<div class="sroll">
 	   <ul>
 		 <c:forEach items="${recordList }" var="list">

@@ -9,7 +9,7 @@ import com.imooc.entity.Wxjs_User;
 
 public interface Wxjs_Service {
 	
-	List<Wxjs_Record> getRecordList(String k,String id);
+	List<Wxjs_Record> getRecordList(String time,String openId);
 	
 	Wxjs_Record getRecordByDate(String nowDate);
 	

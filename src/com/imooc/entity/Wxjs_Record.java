@@ -11,6 +11,8 @@ public class Wxjs_Record {
     private String startTime;
     private String endTime;
 	
+    private String userName;
+    
 	public String getId() {
 		return id;
 	}
@@ -35,7 +37,13 @@ public class Wxjs_Record {
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
-    
-    
-    
+	
+	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
 }

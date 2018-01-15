@@ -13,7 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.http.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +32,8 @@ import com.imooc.entity.Wxjs_Address;
 import com.imooc.entity.Wxjs_Record;
 import com.imooc.entity.Wxjs_User;
 import com.imooc.service.Wxjs_Service;
+import com.imooc.servlet.WeiXinJs_SDKServlet;
 import com.imooc.util.WeixinUtil;
-
-import net.sf.json.JSONObject;
 
 @Controller
 public class Wxjs_Controller {
@@ -116,8 +119,10 @@ public class Wxjs_Controller {
 	 * @param model
 	 * @return
 	 */
+
 	@RequestMapping("/findRecord")
-	public String findRecord(Model model){
+	@SuppressWarnings("unchecked")
+	public String findRecord(Model model,String openId) throws IOException{
 		
 		Calendar c = Calendar.getInstance();//可以对每个时间域单独修改   
 		int year = c.get(Calendar.YEAR);
@@ -164,28 +169,57 @@ public class Wxjs_Controller {
 		list.add(key);
 		
 		List<Wxjs_Record> Wxjs_List = null;
-		String id = "13000100";
+		
+//		String id = "13000100";
+		
 		Map<String,Object> map = new HashMap<String,Object>();
-		for (String k : list) {
-			Wxjs_List =  wxjs_Service.getRecordList(k,id);
+		for (String time : list) {
+			Wxjs_List =  wxjs_Service.getRecordList(time,openId);
 			if(Wxjs_List.size()>0){
-				map.put(k, Wxjs_List);
+				map.put(time, Wxjs_List);
 			}
 		}
 		
 		Map<String, Object> resultMap = sortMapByKey(map);    //按Key进行排序
 		
-		model.addAttribute("id","13000100");
+		String userName = "";
+		if(resultMap != null){
+			
+			List<Wxjs_Record> recordList = (List<Wxjs_Record>) getRandomValueFromMap(resultMap);
+			
+			userName = recordList.get(0).getUserName();    //用户姓名
+		}
+		
+		model.addAttribute("userName",userName);
 		model.addAttribute("recordList",resultMap);
 		return "/record";
-		
+	
 	}
+	
+	/** 
+     * 从map中随机取得一个value 
+     * @param map 
+     * @return 
+     */  
+    public static <K, V> V getRandomValueFromMap(Map<K, V> map) {  
+        int rn = (int) (Math.random()*map.size());  
+        int i = 0;  
+        for (V value : map.values()) {  
+            if(i==rn){  
+                return value;  
+            }  
+            i++;  
+        }  
+        return null;  
+    } 
+    
+	
+	
 	
 	/**
 	 * 判断用户和微信是否已绑定
 	 * @param request
 	 * @param model
-	 * @return
 	 * @throws ParseException
 	 * @throws IOException
 	 */
@@ -194,15 +228,8 @@ public class Wxjs_Controller {
 		
 		String code = request.getParameter("code");
 		
-		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
-                + "appid=" + WeixinUtil.APPID
-                + "&secret=" + WeixinUtil.APPSECRET
-                + "&code=" + code
-                + "&grant_type=authorization_code";
+		String openId = WeixinUtil.getOpenId(code);
 		
-		JSONObject jsonObject = WeixinUtil.doGetStr(url);
-//		System.out.println("<><><><><><><><>"+jsonObject);
-		String openId = jsonObject.getString("openid");
 //		String openId = "oNBaExOt67SzKoTQ0mkTwSwxcymo";
 		
 		Wxjs_User user  = wxjs_Service.findByOpenId(openId);
@@ -211,11 +238,35 @@ public class Wxjs_Controller {
 			return "/login";             //到页面
 		}
 		
-		attr.addAttribute("openId", openId);
+//		attr.addAttribute("openId", openId);   //传值到另一个，相当于get请求用?拼接
+//		return "redirect:/wxjs_sdk";     //跳转到方法
 		
-		return "redirect:/wxjs_sdk";     //跳转到方法
+//		String url = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk?openId="+openId;
+		String url = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/showLogin?code="+code+"&state=STATE";
+		String timestamp = String.valueOf(System.currentTimeMillis()/1000); // 必填，生成签名的时间戳,时间戳(timestamp)值要记住精确到秒，不是毫秒。
+		String nonceStr= WeiXinJs_SDKServlet.Random(16); // 必填，生成签名的随机串
+		String ticket = WeiXinJs_SDKServlet.getJsTicket();
+		String string1 = "jsapi_ticket="+ticket+
+				         "&noncestr="+nonceStr+
+				         "&timestamp="+timestamp+
+				         "&url="+url;
 		
+//		System.out.println(ticket +"....."+nonceStr +"......"+timestamp+"...."+url);
+		
+//		System.out.println(string1);
+		
+		String signature = WeiXinJs_SDKServlet.getSha1(string1);
+		
+		model.addAttribute("appId", WeiXinJs_SDKServlet.APPID);
+		model.addAttribute("time", timestamp);
+		model.addAttribute("nonceStr", nonceStr);
+		model.addAttribute("signature", signature);
+		model.addAttribute("openId", openId);
+		
+		return "/index";
 	}
+		
+	
 	
 	
 	/**
@@ -230,6 +281,8 @@ public class Wxjs_Controller {
 		return String.valueOf(a);
 		
 	}
+	
+		
 	
 	/**
 	 * map按照key排序
