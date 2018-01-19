@@ -10,9 +10,10 @@
        select * 
        from card_record 
        where clock_date = #{nowDate}
+       and id = #{id}
     </select>
     
-    <select id="queryAll" resultType="Wxjs_Record" >
+    <select id="queryRecord" resultType="Wxjs_Record" >
         SELECT *
         FROM card_record  r
         LEFT JOIN card_user u on r.id = u.usercode
@@ -33,6 +34,7 @@
        update card_record 
        set end_time = #{endTime}
        where clock_date = #{clockDate}
+       and id = #{id}
     </update>
     
     <select id="findAddress" resultType="Wxjs_Address">

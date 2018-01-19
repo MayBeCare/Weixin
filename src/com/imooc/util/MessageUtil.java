@@ -15,8 +15,12 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.imooc.entity.Image;
 import com.imooc.entity.ImageMessage;
+import com.imooc.entity.MassImage;
+import com.imooc.entity.MassText;
 import com.imooc.entity.Music;
 import com.imooc.entity.MusicMessage;
 import com.imooc.entity.News;
@@ -294,6 +298,54 @@ public class MessageUtil {
 		musicMessage.setMusic(music);
 		message = musicMessageToXml(musicMessage);
 		return message;
+	}
+	
+	/**
+	 * 组装群发图片消息
+	 * @return
+	 */
+	public static String initMassImage(String mediaId) {
+		MassImage massImage = new MassImage();
+		List<String> list = new ArrayList<String>();
+		list.add("oNBaExOt67SzKoTQ0mkTwSwxcymo");
+		list.add("oNBaExPvHIa8wq2juVah97EGdiMk");
+		massImage.setTouser(list);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("media_id", mediaId);
+		massImage.setImage(map);
+		
+		massImage.setMsgtype("image");
+		
+		Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+		String str = gson.toJson(massImage);
+		System.out.println("str:" + str);
+		return str;
+
+	}
+	
+	/**
+	 * 组装群发文本消息
+	 * @return
+	 */
+	public static String initMassText() {
+		MassText massText = new MassText();
+		List<String> list = new ArrayList<String>();
+		list.add("oNBaExOt67SzKoTQ0mkTwSwxcymo");
+		list.add("oNBaExPvHIa8wq2juVah97EGdiMk");
+		massText.setTouser(list);
+		
+		massText.setMsgtype("text");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("content", "Hello,<a href='https://www.baidu.com'>点我去百度了</a>");
+		massText.setText(map);
+
+		Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+		String str = gson.toJson(massText);
+		System.out.println("str:" + str);
+		return str;
+
 	}
 
 }

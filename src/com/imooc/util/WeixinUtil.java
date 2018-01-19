@@ -63,6 +63,12 @@ public class WeixinUtil {
 	
 	private static final String USER_LOGIN_URL = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/showLogin";
 	
+	//根据openID群发
+	public static final String Mass_Image_URL = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=ACCESS_TOKEN";
+	
+	//上传图文消息内的图片获取URL
+	public static final String Upload_Mass_Image = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=ACCESS_TOKEN";
+	
 	/*
 	 * 百度翻译
 	 */
@@ -126,6 +132,7 @@ public class WeixinUtil {
 		}
 
 		String url = UPLOAD_URL.replace("ACCESS_TOKEN", accessToken).replace("TYPE",type);
+//		String url = Upload_Mass_Image.replace("ACCESS_TOKEN", accessToken);
 		
 		URL urlObj = new URL(url);
 		//连接
@@ -203,6 +210,7 @@ public class WeixinUtil {
 		if(!"image".equals(type)){
 			typeName = type + "_media_id";
 		}
+		
 		String mediaId = jsonObj.getString(typeName);
 		return mediaId;
 	}
@@ -245,7 +253,7 @@ public class WeixinUtil {
                 + "appid=" + APPID
                 + "&redirect_uri=" + URLEncoder.encode(USER_LOGIN_URL,"utf-8") 
                 + "&response_type=code"
-                + "&scope=snsapi_userinfo"
+                + "&scope=snsapi_base"
                 + "&state=STATE"
                 + "#wechat_redirect";
 		button21.setUrl(url);
@@ -334,7 +342,47 @@ public class WeixinUtil {
 		String openId = jsonObject.getString("openid");
 		
 		return openId;
+	}
+	
+	
+	/**
+	 * 根据openID群发
+	 * @param token
+	 * @param outStr
+	 * @return
+	 */
+	public static JSONObject sendMass(String token, String outStr) {
 		
+		String url = Mass_Image_URL.replace("ACCESS_TOKEN", token);
+		
+		JSONObject jsonObject = doPostMass(url,outStr);
+		
+		return jsonObject;
+		
+	}
+	
+	/**
+	 * 群发post请求
+	 * @param url
+	 * @param outStr
+	 * @return
+	 */
+	public static JSONObject doPostMass(String url, String outStr) {
+		
+		JSONObject jsonObject = null;
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(url);
+		
+		try {
+			httpPost.setEntity(new StringEntity(outStr, "UTF-8"));
+			HttpResponse response = httpClient.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+			String result = EntityUtils.toString(entity, "UTF-8");
+			jsonObject = JSONObject.fromObject(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonObject;
 	}
 	
 }

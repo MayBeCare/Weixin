@@ -54,7 +54,7 @@ public class Wxjs_Controller {
 	public String main(String latitude,String longitude,String openId){
 		
 		System.out.println("...纬度..."+latitude  +"...经度..."+longitude);
-		logger.info("=======>>>>>>{}", openId);
+		
 		List<Object> cardList = new ArrayList<Object>();
 		
 		List<Wxjs_Address> addressList = wxjs_Service.findCardAddress();
@@ -85,7 +85,7 @@ public class Wxjs_Controller {
         Wxjs_Record newStartRecord = null;
         Wxjs_Record newEndRecord = null;
         
-        Wxjs_Record wxjs_Record = wxjs_Service.getRecordByDate(nowDate);   
+        Wxjs_Record wxjs_Record = wxjs_Service.getRecordByDate(nowDate,user.getUserCode());   
         
         if(wxjs_Record == null){                         //当前未打卡
         	newStartRecord = new Wxjs_Record();
@@ -101,6 +101,7 @@ public class Wxjs_Controller {
         	wxjs_Service.addNewRecord(newStartRecord);
         }else{                                               //当前已打卡，则更新终止打卡时间
         	newEndRecord = new Wxjs_Record();
+        	newEndRecord.setId(user.getUserCode());
         	newEndRecord.setClockDate(nowDate);
         	/*获取当前时间*/
         	DateFormat endTime=new SimpleDateFormat("HH:mm:ss");  
@@ -230,7 +231,7 @@ public class Wxjs_Controller {
 		
 		String openId = WeixinUtil.getOpenId(code);
 		
-//		String openId = "oNBaExOt67SzKoTQ0mkTwSwxcymo";
+//		String openId = "oNBaExOt67SzKoTQ0mkTwSwxcym";
 		
 		Wxjs_User user  = wxjs_Service.findByOpenId(openId);
 		if(user == null){

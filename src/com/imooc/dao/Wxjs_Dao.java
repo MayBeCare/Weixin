@@ -11,9 +11,9 @@ import com.imooc.entity.Wxjs_User;
 
 public interface Wxjs_Dao {
 	
-	List<Wxjs_Record> queryAll(@Param("clockDate")String time,@Param("openId")String openId);
+	List<Wxjs_Record> queryRecord(@Param("clockDate")String time,@Param("openId")String openId);
 	
-	Wxjs_Record queryByDate(String nowDate);
+	Wxjs_Record queryByDate(@Param("nowDate")String nowDate,@Param("id")String id);
 	
 	int addNewRecord(Wxjs_Record newRecord);
 	

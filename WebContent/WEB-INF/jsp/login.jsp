@@ -20,7 +20,7 @@
     border: 1px solid #000000;
     border-radius: 6px;
     padding: 10px; */
-    margin-top: 40%;
+    margin-top: 20%;
     text-align: center;
   /*   margin-left: auto;
     margin-right: auto;
@@ -51,21 +51,23 @@
 }
 
 .login-button-box button{
-    background-color: #ff7d0a;
+    background-color: #39867E;
     color: #ffffff;
     font-size: 16px;
     width: 270px;
     height: 40px;
     margin-left: 18px;
-    border: 1px solid #ff7d0a;
+    border: 1px solid #39867E;
     border-radius: 4px;
 }
+.login_img{display:block;width:100px;margin:90px auto 30px;}
 </style>
 <body>
+   <img src="<%=basePath%>image/login.png" class="login_img"/>
   <div class="content">
       <input type="text" id="openId" value='${openId}' style='display: none;'>
       <div class="login-input-box">
-          <input type="text" id="userCode" placeholder="输入用户名">
+          <input type="text" id="userCode" placeholder="输入工号">
       </div>
       <div class="login-input-box">
            <input type="password" id="userPassWord" placeholder="输入密码">
@@ -73,15 +75,23 @@
       <div class="login-button-box">
            <button type="button" id="login">登录</button>
       </div>
+      <!-- <input type="checkbox" id="checked" checked disabled>
+        <label for="checked">绑定微信登陆</label> -->
    </div>
+  
 </body>
 </html>
 <script type="text/javascript">
    $("#login").click(function(){
 	   
-	   var userCode = $("#userCode").val();
-	   var userPassWord = $("#userPassWord").val();
+	   var userCode = $("#userCode").val().trim();
+	   var userPassWord = $("#userPassWord").val().trim();
 	   var openId = $("#openId").val();
+	   
+	   if(userCode ==(null||"") || userPassWord ==(null||"")){
+		  alert("工号或密码不能为空");
+		  return false;
+	   }
 	   
 	   $.ajax({
 	       url : "userLogin",  
@@ -96,7 +106,7 @@
               if(data == "1"){
             	  window.location.href= "wxjs_sdk";
               }else if(data == "0"){
-                  alert("用户名或密码错误");
+                  alert("工号或密码错误");
               }
            },
 	    });

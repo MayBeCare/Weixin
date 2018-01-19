@@ -19,11 +19,11 @@ public class Wxjs_ServiceImpl implements Wxjs_Service{
     private Wxjs_Dao wxjs_Dao;
 
 	public List<Wxjs_Record> getRecordList(String time,String openId) {
-		return wxjs_Dao.queryAll(time,openId);
+		return wxjs_Dao.queryRecord(time,openId);
 	}
 
-	public Wxjs_Record getRecordByDate(String nowDate) {
-		return wxjs_Dao.queryByDate(nowDate);
+	public Wxjs_Record getRecordByDate(String nowDate,String id) {
+		return wxjs_Dao.queryByDate(nowDate,id);
 	}
 
 	public int addNewRecord(Wxjs_Record newRecord) {

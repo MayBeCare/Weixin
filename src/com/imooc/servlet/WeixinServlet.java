@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.dom4j.DocumentException;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import com.imooc.util.CheckUtil;
 import com.imooc.util.MessageUtil;
 import com.imooc.util.WeixinUtil;
@@ -21,10 +21,6 @@ public class WeixinServlet extends HttpServlet{
 	
 	private static final long serialVersionUID = 1L;
 	
-	public void init(ServletConfig config) throws ServletException {  
-	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());  
-	}
-
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			                                  throws ServletException, IOException {

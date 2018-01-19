@@ -11,7 +11,7 @@ public interface Wxjs_Service {
 	
 	List<Wxjs_Record> getRecordList(String time,String openId);
 	
-	Wxjs_Record getRecordByDate(String nowDate);
+	Wxjs_Record getRecordByDate(String nowDate,String id);
 	
 	int addNewRecord(Wxjs_Record newRecord);
 	

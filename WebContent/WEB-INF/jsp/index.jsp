@@ -26,6 +26,7 @@
 	    font-size: 16px;
 	    border-radius: 20px;
      }
+   .record_img{text-align: center; margin: 10px 10px 38px 1px;}
  </style>
 	<body>
 	   <%--  <%  
@@ -206,14 +207,17 @@
 		dateTime();
 		
 	 </script>
-	    
+	 
+	  <div class='record_img'>
+	    <img src="<%=basePath%>image/record.png" style="width: 280px;" onclick = "getAdress();">
+	  </div>  
 	    <div style="text-align: center; ">
 		    <button onclick = "getAdress();">获取位置打卡</button>
 		    <!-- <button onclick = "chooseImage();">选择图片</button> -->
 		    <button onclick = "findRecord();">查看打卡记录</button>
 	    </div>
 	    
-	    <div id="loading" style="display:none;text-align: center; ">
+	    <div id="loading" style="display:none;text-align: center;z-index: 99; position: fixed; left: 0; right: 0;bottom: 50%; ">
 		 <img style="width:50px;" src="<%=basePath%>image/load.gif" />
 	    </div>
 	    
