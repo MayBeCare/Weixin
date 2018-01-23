@@ -166,7 +166,7 @@ public class MessageUtil {
 		News news = new News();
 		news.setTitle("慕课网介绍");
 		news.setDescription("慕课网是垂直的互联网IT技能免费学习网站。以独家视频教程、在线编程工具、学习计划、问答社区为核心特色。在这里，你可以找到最好的互联网技术牛人，也可以通过免费的在线公开视频课程学习国内领先的互联网IT技术。慕课网课程涵盖前端开发、PHP、Html5、Android、iOS、Swift等IT前沿技术语言，包括基础课程、实用案例、高级分享三大类型，适合不同阶段的学习人群。");
-		news.setPicUrl("http://wx.com.ngrok.xiaomiqiu.cn/Weixin/image/imooc.jpg");       //图片链接
+		news.setPicUrl(WeixinUtil.DOMAIN_NAME +"Weixin/image/imooc.jpg");       //图片链接
 		news.setUrl("www.imooc.com");              //点击图文消息跳转链接
 		 
 		newsList.add(news);
@@ -287,8 +287,8 @@ public class MessageUtil {
 		music.setThumbMediaId("oeVOCzVQwF0ChgtJYRsKqX0wcyP44Q6S98oWhN7TMCr9jL0GbEvXekF1MjNcJ6Hl");
 		music.setTitle("see you again");
 		music.setDescription("速7片尾曲");
-		music.setMusicUrl("http://wx.com.ngrok.xiaomiqiu.cn/Weixin/resource/See You Again.mp3");
-		music.setHQMusicUrl("http://wx.com.ngrok.xiaomiqiu.cn/Weixin/resource/See You Again.mp3");
+		music.setMusicUrl(WeixinUtil.DOMAIN_NAME + "resource/See You Again.mp3");
+		music.setHQMusicUrl(WeixinUtil.DOMAIN_NAME + "resource/See You Again.mp3");
 		
 		MusicMessage musicMessage = new MusicMessage();
 		musicMessage.setFromUserName(toUserName);

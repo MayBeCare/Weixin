@@ -243,7 +243,7 @@ public class Wxjs_Controller {
 //		return "redirect:/wxjs_sdk";     //跳转到方法
 		
 //		String url = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk?openId="+openId;
-		String url = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/showLogin?code="+code+"&state=STATE";
+		String url = WeixinUtil.DOMAIN_NAME + "showLogin?code="+code+"&state=STATE";
 		String timestamp = String.valueOf(System.currentTimeMillis()/1000); // 必填，生成签名的时间戳,时间戳(timestamp)值要记住精确到秒，不是毫秒。
 		String nonceStr= WeiXinJs_SDKServlet.Random(16); // 必填，生成签名的随机串
 		String ticket = WeiXinJs_SDKServlet.getJsTicket();

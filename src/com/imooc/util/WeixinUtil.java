@@ -61,8 +61,10 @@ public class WeixinUtil {
 	
 	private static final String USER_INFO = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID";
 	
-	private static final String USER_LOGIN_URL = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/showLogin";
 	
+	//外网映射域名
+	public static final String DOMAIN_NAME = "http://wx.com.tunnel.qydev.com/Weixin/";
+		
 	//根据openID群发
 	public static final String Mass_Image_URL = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=ACCESS_TOKEN";
 	
@@ -251,7 +253,7 @@ public class WeixinUtil {
 //		button21.setUrl("http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk");
 		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?"
                 + "appid=" + APPID
-                + "&redirect_uri=" + URLEncoder.encode(USER_LOGIN_URL,"utf-8") 
+                + "&redirect_uri=" + URLEncoder.encode(DOMAIN_NAME+"showLogin","utf-8") 
                 + "&response_type=code"
                 + "&scope=snsapi_base"
                 + "&state=STATE"
