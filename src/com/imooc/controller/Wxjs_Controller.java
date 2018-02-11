@@ -241,7 +241,6 @@ public class Wxjs_Controller {
 //		attr.addAttribute("openId", openId);   //传值到另一个，相当于get请求用?拼接
 //		return "redirect:/wxjs_sdk";     //跳转到方法
 		
-//		String url = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk?openId="+openId;
 		String re_url = WeixinUtil.DOMAIN_NAME + "showLogin?code="+code+"&state=STATE";
 		String timestamp = String.valueOf(System.currentTimeMillis()/1000); // 必填，生成签名的时间戳,时间戳(timestamp)值要记住精确到秒，不是毫秒。
 		String nonceStr= WeiXinJs_SDKUtil.Random(16); // 必填，生成签名的随机串

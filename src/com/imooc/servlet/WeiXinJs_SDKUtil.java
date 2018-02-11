@@ -23,6 +23,9 @@ import com.imooc.service.Wxjs_Service;
 
 import net.sf.json.JSONObject;
 
+/*
+ * 此类,在静态方法中使用Service
+ */
 @Component
 public class WeiXinJs_SDKUtil {
 
