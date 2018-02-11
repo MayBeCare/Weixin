@@ -6,8 +6,8 @@ import java.text.DecimalFormat;
 public class Test {
 	
 	public static void main(String[] args) {
-		String time1 = "2017年12月08";
-		String time2 = "2018年01月01";
+		String time1 = "2018-01-10";
+		String time2 = "2018-01-11";
 		int time = time1.compareTo(time2);
 		System.out.println(time);
 		if(time <= 0){

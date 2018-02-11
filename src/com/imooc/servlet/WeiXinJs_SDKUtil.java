@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.annotation.WebServlet;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,7 +23,6 @@ import com.imooc.service.Wxjs_Service;
 
 import net.sf.json.JSONObject;
 
-@WebServlet("/wxjs_sdk")
 @Component
 public class WeiXinJs_SDKUtil {
 
