@@ -13,11 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.http.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +28,9 @@ import com.imooc.entity.Wxjs_Address;
 import com.imooc.entity.Wxjs_Record;
 import com.imooc.entity.Wxjs_User;
 import com.imooc.service.Wxjs_Service;
-import com.imooc.servlet.WeiXinJs_SDKServlet;
+import com.imooc.servlet.WeiXinJs_SDKUtil;
 import com.imooc.util.WeixinUtil;
+
 
 @Controller
 public class Wxjs_Controller {
@@ -150,8 +147,9 @@ public class Wxjs_Controller {
 		}else{
 			if(lastmonth < 10){
 				key = year +"年0"+lastmonth+"月";
+			}else{
+				key = year +"年"+lastmonth+"月";
 			}
-			key = year +"年"+lastmonth+"月";
 		}
 		list.add(key);
 		
@@ -174,6 +172,7 @@ public class Wxjs_Controller {
 //		String id = "13000100";
 		
 		Map<String,Object> map = new HashMap<String,Object>();
+		
 		for (String time : list) {
 			Wxjs_List =  wxjs_Service.getRecordList(time,openId);
 			if(Wxjs_List.size()>0){
@@ -231,7 +230,7 @@ public class Wxjs_Controller {
 		
 		String openId = WeixinUtil.getOpenId(code);
 		
-//		String openId = "oNBaExOt67SzKoTQ0mkTwSwxcym";
+//		String openId = "oNBaExOt67SzKoTQ0mkTwSwxcymo";
 		
 		Wxjs_User user  = wxjs_Service.findByOpenId(openId);
 		if(user == null){
@@ -243,22 +242,22 @@ public class Wxjs_Controller {
 //		return "redirect:/wxjs_sdk";     //跳转到方法
 		
 //		String url = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk?openId="+openId;
-		String url = WeixinUtil.DOMAIN_NAME + "showLogin?code="+code+"&state=STATE";
+		String re_url = WeixinUtil.DOMAIN_NAME + "showLogin?code="+code+"&state=STATE";
 		String timestamp = String.valueOf(System.currentTimeMillis()/1000); // 必填，生成签名的时间戳,时间戳(timestamp)值要记住精确到秒，不是毫秒。
-		String nonceStr= WeiXinJs_SDKServlet.Random(16); // 必填，生成签名的随机串
-		String ticket = WeiXinJs_SDKServlet.getJsTicket();
+		String nonceStr= WeiXinJs_SDKUtil.Random(16); // 必填，生成签名的随机串
+		String ticket = WeiXinJs_SDKUtil.getJsTicket();
 		String string1 = "jsapi_ticket="+ticket+
 				         "&noncestr="+nonceStr+
 				         "&timestamp="+timestamp+
-				         "&url="+url;
+				         "&url="+re_url;
 		
 //		System.out.println(ticket +"....."+nonceStr +"......"+timestamp+"...."+url);
 		
 //		System.out.println(string1);
 		
-		String signature = WeiXinJs_SDKServlet.getSha1(string1);
+		String signature = WeiXinJs_SDKUtil.getSha1(string1);
 		
-		model.addAttribute("appId", WeiXinJs_SDKServlet.APPID);
+		model.addAttribute("appId", WeiXinJs_SDKUtil.APPID);
 		model.addAttribute("time", timestamp);
 		model.addAttribute("nonceStr", nonceStr);
 		model.addAttribute("signature", signature);
@@ -283,6 +282,39 @@ public class Wxjs_Controller {
 		
 	}
 	
+	/*
+	 * 登录成功跳转
+	 */
+	@RequestMapping("/wxjs_login")
+	public String login(HttpServletRequest request,Model model) throws ParseException, IOException{
+		
+		String openId = request.getParameter("openId");
+		
+		String log_url = WeixinUtil.DOMAIN_NAME + "wxjs_login?openId="+openId;
+		
+		String timestamp = String.valueOf(System.currentTimeMillis()/1000); // 必填，生成签名的时间戳,时间戳(timestamp)值要记住精确到秒，不是毫秒。
+		String nonceStr= WeiXinJs_SDKUtil.Random(16); // 必填，生成签名的随机串
+		String ticket = WeiXinJs_SDKUtil.getJsTicket();
+		String string1 = "jsapi_ticket="+ticket+
+				         "&noncestr="+nonceStr+
+				         "&timestamp="+timestamp+
+				         "&url="+log_url;
+		
+//		System.out.println(ticket +"....."+nonceStr +"......"+timestamp+"...."+url);
+		
+//		System.out.println(string1);
+		
+		String signature = WeiXinJs_SDKUtil.getSha1(string1);
+		
+		model.addAttribute("appId", WeiXinJs_SDKUtil.APPID);
+		model.addAttribute("time", timestamp);
+		model.addAttribute("nonceStr", nonceStr);
+		model.addAttribute("signature", signature);
+		model.addAttribute("openId", openId);
+		
+		return "/index";
+	}
+	
 		
 	
 	/**
@@ -298,7 +330,7 @@ public class Wxjs_Controller {
 
         Map<String, Object> returnMap  = new TreeMap<String, Object>(new MapKeyComparator());
 
-        returnMap .putAll(map);
+        returnMap.putAll(map);
 
         return returnMap;
     }
@@ -314,6 +346,7 @@ public class Wxjs_Controller {
             //return str1.compareTo(str2);
 	    }
 	}
+
 	
 	/**
 	 * 1. Lng1 Lat1  表示A点经纬度，Lng2 Lat2  表示B点经纬度；

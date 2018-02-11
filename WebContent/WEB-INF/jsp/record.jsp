@@ -31,7 +31,7 @@
 </style>
 <body>
 	<c:if test="${userName != ''}">
-		<h2>${userName}的打卡记录</h2>
+		<h2><span style="color: #39867e">${userName}</span>的打卡记录</h2>
 	</c:if>
 	<div class="sroll">
 	   <ul>

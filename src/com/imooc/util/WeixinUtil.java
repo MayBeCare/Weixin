@@ -63,6 +63,7 @@ public class WeixinUtil {
 	
 	
 	//外网映射域名
+//	public static final String DOMAIN_NAME = "http://wxpub.free.ngrok.cc/Weixin/";
 	public static final String DOMAIN_NAME = "http://wx.com.tunnel.qydev.com/Weixin/";
 		
 	//根据openID群发
@@ -255,7 +256,7 @@ public class WeixinUtil {
                 + "appid=" + APPID
                 + "&redirect_uri=" + URLEncoder.encode(DOMAIN_NAME+"showLogin","utf-8") 
                 + "&response_type=code"
-                + "&scope=snsapi_base"
+                + "&scope=snsapi_userinfo"
                 + "&state=STATE"
                 + "#wechat_redirect";
 		button21.setUrl(url);
@@ -338,7 +339,7 @@ public class WeixinUtil {
                 + "&secret=" + APPSECRET
                 + "&code=" + code
                 + "&grant_type=authorization_code";
-		
+               
 		JSONObject jsonObject = WeixinUtil.doGetStr(url);
 		
 		String openId = jsonObject.getString("openid");

@@ -5,12 +5,7 @@ import java.security.MessageDigest;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -22,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.imooc.entity.AccessToken;
 import com.imooc.entity.Wxjs_Ticket;
@@ -30,22 +24,21 @@ import com.imooc.service.Wxjs_Service;
 
 import net.sf.json.JSONObject;
 
-//@WebServlet("/wxjs_sdk")
+@WebServlet("/wxjs_sdk")
 @Component
-public class WeiXinJs_SDKServlet /*extends HttpServlet*/{
+public class WeiXinJs_SDKUtil {
 
-	private static final long serialVersionUID = 1L;
 	public static final String APPID = "wx0fd51bf2fc843efb";
 	private static final String APPSECRET = "bb1fd7bba658544573040dc852c96c63";
 	private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private static final String jsapi_ticket_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
 	
-	private final static Logger logger = LoggerFactory.getLogger(WeiXinJs_SDKServlet.class);
+	private final static Logger logger = LoggerFactory.getLogger(WeiXinJs_SDKUtil.class);
 	
 	@Autowired
     private Wxjs_Service wxjs_Service;
 	
-	private static WeiXinJs_SDKServlet weiXinJsUtil;
+	private static WeiXinJs_SDKUtil weiXinJsUtil;
 	
 	 @PostConstruct  
      public void init() {           //静态方法里面使用注入的Service 
@@ -53,43 +46,6 @@ public class WeiXinJs_SDKServlet /*extends HttpServlet*/{
 		 weiXinJsUtil.wxjs_Service = this.wxjs_Service; 
      } 
 
-/*	public void init(ServletConfig config) throws ServletException {  
-	    SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());  
-	}
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String openId = request.getParameter("openId");
-//		System.out.println(openId);
-		
-		String url = "http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk?openId="+openId;
-		String timestamp = String.valueOf(System.currentTimeMillis()/1000); // 必填，生成签名的时间戳,时间戳(timestamp)值要记住精确到秒，不是毫秒。
-		String nonceStr= Random(16); // 必填，生成签名的随机串
-		String ticket = getJsTicket();
-		String string1 = "jsapi_ticket="+ticket+
-				         "&noncestr="+nonceStr+
-				         "&timestamp="+timestamp+
-				         "&url="+url;
-		
-//		System.out.println(timestamp +"....."+nonceStr +"......"+ticket);
-//		
-//		System.out.println(string1);
-		
-		String signature = getSha1(string1);
-		request.setCharacterEncoding("UTF-8");
-		request.setAttribute("appId", APPID);
-		request.setAttribute("time", timestamp);
-		request.setAttribute("nonceStr", nonceStr);
-		request.setAttribute("signature", signature);
-		request.setAttribute("openId", openId);
-		request.getRequestDispatcher("/index.jsp").forward(request, response);
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		super.doGet(req, resp);
-	}*/
 	
 	/**
 	 * 生成指定个数的随机数

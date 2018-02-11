@@ -104,7 +104,7 @@
            
            success:function(data){
               if(data == "1"){
-            	  window.location.href= "wxjs_sdk";
+            	  window.location.href= "wxjs_login?openId="+openId;
               }else if(data == "0"){
                   alert("工号或密码错误");
               }

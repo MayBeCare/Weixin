@@ -319,6 +319,7 @@ public class MessageUtil {
 		
 		Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 		String str = gson.toJson(massImage);
+		
 		System.out.println("str:" + str);
 		return str;
 
@@ -340,7 +341,7 @@ public class MessageUtil {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("content", "Hello,<a href='https://www.baidu.com'>点我去百度了</a>");
 		massText.setText(map);
-
+        
 		Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 		String str = gson.toJson(massText);
 		System.out.println("str:" + str);

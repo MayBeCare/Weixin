@@ -35,7 +35,7 @@
 		    <param-value>classpath:spring/spring-*.xml</param-value>
       </context-param> -->
   
-   <!--配置DispatcherServlet-->
+   <!--配置前端控制器DispatcherServlet-->
       <servlet>
             <servlet-name>weixin-dispatcher</servlet-name>
             <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
