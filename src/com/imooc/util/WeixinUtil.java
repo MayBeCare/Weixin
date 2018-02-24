@@ -63,8 +63,8 @@ public class WeixinUtil {
 	
 	
 	//外网映射域名
-//	public static final String DOMAIN_NAME = "http://wxpub.free.ngrok.cc/Weixin/";
-	public static final String DOMAIN_NAME = "http://wx.com.tunnel.qydev.com/Weixin/";
+	public static final String DOMAIN_NAME = "http://wxpub.free.ngrok.cc/Weixin/";
+//	public static final String DOMAIN_NAME = "http://wx.com.tunnel.qydev.com/Weixin/";
 		
 	//根据openID群发
 	public static final String Mass_Image_URL = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=ACCESS_TOKEN";
