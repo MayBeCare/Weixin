@@ -162,8 +162,9 @@ public class Wxjs_Controller {
 		}else{
 			if(beforemonth < 10){
 				key = year +"年0"+beforemonth+"月";
+			}else{
+				key = year +"年"+beforemonth+"月";
 			}
-			key = year +"年"+beforemonth+"月";
 		}
 		list.add(key);
 		
