@@ -11,7 +11,7 @@ public class Test {
 		int time = time1.compareTo(time2);
 		System.out.println(time);
 		if(time <= 0){
-			System.out.println("生效");
+			System.out.println("鐢熸晥");
 		}
 		
 		DecimalFormat formater = new DecimalFormat("#0.##");
@@ -30,7 +30,7 @@ public class Test {
     }  
   
     /** 
-     * 计算两个经纬度之间的距离 
+     * 璁＄畻涓や釜缁忕含搴︿箣闂寸殑璺濈 
      * @param lat1 
      * @param lng1 
      * @param lat2 

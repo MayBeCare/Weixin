@@ -27,12 +27,12 @@ public class TransApi {
 
         params.put("appid", appid);
 
-        // Ëæ»úÊı
+        // éšæœºæ•°
         String salt = String.valueOf(System.currentTimeMillis());
         params.put("salt", salt);
 
-        // Ç©Ãû
-        String src = appid + query + salt + securityKey; // ¼ÓÃÜÇ°µÄÔ­ÎÄ
+        // ç­¾å
+        String src = appid + query + salt + securityKey; // åŠ å¯†å‰çš„åŸæ–‡
         params.put("sign", MD5.md5String(src));
 
         return params;

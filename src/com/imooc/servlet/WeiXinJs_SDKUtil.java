@@ -24,7 +24,7 @@ import com.imooc.service.Wxjs_Service;
 import net.sf.json.JSONObject;
 
 /*
- * ´ËÀà,ÔÚ¾²Ì¬·½·¨ÖĞÊ¹ÓÃService
+ * æ­¤ç±»,åœ¨é™æ€æ–¹æ³•ä¸­ä½¿ç”¨Service
  */
 @Component
 public class WeiXinJs_SDKUtil {
@@ -42,14 +42,14 @@ public class WeiXinJs_SDKUtil {
 	private static WeiXinJs_SDKUtil weiXinJsUtil;
 	
 	 @PostConstruct  
-     public void init() {           //¾²Ì¬·½·¨ÀïÃæÊ¹ÓÃ×¢ÈëµÄService 
+     public void init() {           //é™æ€æ–¹æ³•é‡Œé¢ä½¿ç”¨æ³¨å…¥çš„Service 
 		 weiXinJsUtil = this; 
 		 weiXinJsUtil.wxjs_Service = this.wxjs_Service; 
      } 
 
 	
 	/**
-	 * Éú³ÉÖ¸¶¨¸öÊıµÄËæ»úÊı
+	 * ç”ŸæˆæŒ‡å®šä¸ªæ•°çš„éšæœºæ•°
 	 * @param length
 	 * @return
 	 */
@@ -57,15 +57,15 @@ public class WeiXinJs_SDKUtil {
 		String val = "";
 		Random random = new Random();
 		for (int i = 0; i < length; i++) {
-		   // Êä³ö×ÖÄ¸»¹ÊÇÊı×Ö
+		   // è¾“å‡ºå­—æ¯è¿˜æ˜¯æ•°å­—
 		   String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num"; 
-		   // ×Ö·û´®
+		   // å­—ç¬¦ä¸²
 		   if ("char".equalsIgnoreCase(charOrNum)) {
-		    // È¡µÃ´óĞ´×ÖÄ¸»¹ÊÇĞ¡Ğ´×ÖÄ¸
+		    // å–å¾—å¤§å†™å­—æ¯è¿˜æ˜¯å°å†™å­—æ¯
 		    int choice = random.nextInt(2) % 2 == 0 ? 65 : 97; 
 		    val += (char) (choice + random.nextInt(26));
 		    
-		   } else if ("num".equalsIgnoreCase(charOrNum)) { // Êı×Ö
+		   } else if ("num".equalsIgnoreCase(charOrNum)) { // æ•°å­—
 		      val += String.valueOf(random.nextInt(10));
 		   }
 		 }
@@ -73,7 +73,7 @@ public class WeiXinJs_SDKUtil {
 	 }
 	
 	/**
-	 * getÇëÇó
+	 * getè¯·æ±‚
 	 * @param url
 	 * @return
 	 * @throws ParseException
@@ -93,7 +93,7 @@ public class WeiXinJs_SDKUtil {
 	  }
 	
 	/**
-	 * »ñÈ¡accessToken
+	 * è·å–accessToken
 	 * @return
 	 * @throws ParseException
 	 * @throws IOException
@@ -110,19 +110,19 @@ public class WeiXinJs_SDKUtil {
 	}
 	
 	/**
-	 * »ñÈ¡jsapi_ticket
+	 * è·å–jsapi_ticket
 	 * @return
 	 * @throws ParseException
 	 * @throws IOException
 	 */
 	public static String getJsTicket() throws ParseException, IOException{
-		//²éÑ¯ticket
+		//æŸ¥è¯¢ticket
 		Wxjs_Ticket wt = weiXinJsUtil.wxjs_Service.findTicket();
 		
 		if(wt != null){
 			long nowTime = System.currentTimeMillis();
 			
-			if(nowTime - wt.getTime() < 7000*1000){          //ÅĞ¶ÏÊÇ·ñÒÑ¹ıÆÚ
+			if(nowTime - wt.getTime() < 7000*1000){          //åˆ¤æ–­æ˜¯å¦å·²è¿‡æœŸ
 				return wt.getTicket();	
 			}
 			weiXinJsUtil.wxjs_Service.deleteTicket(wt.getId());
@@ -146,13 +146,13 @@ public class WeiXinJs_SDKUtil {
 		newTicket.setTime(creTime);
 		weiXinJsUtil.wxjs_Service.addNewTicket(newTicket);
 		
-		logger.info("Ö´ĞĞÁËtoken=====>>>>>>>>>{}",ticket);
+		logger.info("æ‰§è¡Œäº†token=====>>>>>>>>>{}",ticket);
 		
 		return ticket;
 	}
 	
 	/**
-	 * sha1 ¼ÓÃÜ
+	 * sha1 åŠ å¯†
 	 * @param str
 	 * @return
 	 */

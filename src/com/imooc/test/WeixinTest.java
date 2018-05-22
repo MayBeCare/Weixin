@@ -10,8 +10,8 @@ public class WeixinTest {
 	public static void main(String[] args) {
 		try {
 			AccessToken token = WeixinUtil.getAccessToken();
-			System.out.println("Æ±¾İ:"+token.getToken());
-			System.out.println("ÓĞĞ§Ê±¼ä:"+token.getExpiresIn());
+			System.out.println("ç¥¨æ®:"+token.getToken());
+			System.out.println("æœ‰æ•ˆæ—¶é—´:"+token.getExpiresIn());
 //			
 //			String path = "D:/touxiang.jpg";
 //			String mediaId = WeixinUtil.upload(path, token.getToken(), "image");  //thumb
@@ -21,15 +21,15 @@ public class WeixinTest {
 			String menu = JSONObject.fromObject(WeixinUtil.initMenu()).toString();
 			int result = WeixinUtil.createMenu(token.getToken(), menu);
 			if(result == 0){
-				System.out.println("´´½¨²Ëµ¥³É¹¦");
+				System.out.println("åˆ›å»ºèœå•æˆåŠŸ");
 			}else{
-				System.out.println("´íÎóÂë:"+result);
+				System.out.println("é”™è¯¯ç :"+result);
 			}
 			
 //			JSONObject jsonObject = WeixinUtil.queryMenu(token.getToken());
 //			System.out.println(jsonObject);
 			
-//			String result = WeixinUtil.translate("°Ù¶È·­Òë");
+//			String result = WeixinUtil.translate("ç™¾åº¦ç¿»è¯‘");
 //			System.out.println(result);
 			
 //			JSONObject jsonObject = WeixinUtil.getUserInfo(token.getToken(),"oNBaExOt67SzKoTQ0mkTwSwxcymo");

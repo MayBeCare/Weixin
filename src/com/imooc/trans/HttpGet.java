@@ -23,17 +23,17 @@ class HttpGet {
 
 //             System.out.println("URL:" + sendUrl);
 
-            URL uri = new URL(sendUrl); // ´´½¨URL¶ÔÏó
+            URL uri = new URL(sendUrl); // åˆ›å»ºURLå¯¹è±¡
             HttpURLConnection conn = (HttpURLConnection) uri.openConnection();
 
-            conn.setConnectTimeout(SOCKET_TIMEOUT); // ÉèÖÃÏàÓ¦³¬Ê±
+            conn.setConnectTimeout(SOCKET_TIMEOUT); // è®¾ç½®ç›¸åº”è¶…æ—¶
             conn.setRequestMethod(GET);
             int statusCode = conn.getResponseCode();
             if (statusCode != HttpURLConnection.HTTP_OK) {
-                System.out.println("Http´íÎóÂë£º" + statusCode);
+                System.out.println("Httpé”™è¯¯ç ï¼š" + statusCode);
             }
 
-            // ¶ÁÈ¡·şÎñÆ÷µÄÊı¾İ
+            // è¯»å–æœåŠ¡å™¨çš„æ•°æ®
             InputStream is = conn.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             StringBuilder builder = new StringBuilder();
@@ -44,9 +44,9 @@ class HttpGet {
 
             String text = builder.toString();
 
-            close(br); // ¹Ø±ÕÊı¾İÁ÷
-            close(is); // ¹Ø±ÕÊı¾İÁ÷
-            conn.disconnect(); // ¶Ï¿ªÁ¬½Ó
+            close(br); // å…³é—­æ•°æ®æµ
+            close(is); // å…³é—­æ•°æ®æµ
+            conn.disconnect(); // æ–­å¼€è¿æ¥
 
             return text;
         } catch (Exception e) {
@@ -70,7 +70,7 @@ class HttpGet {
         int i = 0;
         for (String key : params.keySet()) {
             String value = params.get(key);
-            if (value == null) { // ¹ıÂË¿ÕµÄkey
+            if (value == null) { // è¿‡æ»¤ç©ºçš„key
                 continue;
             }
             if (i != 0) {
@@ -98,10 +98,10 @@ class HttpGet {
     }
 
     /**
-     * ¶ÔÊäÈëµÄ×Ö·û´®½øĞĞURL±àÂë, ¼´×ª»»Îª%20ÕâÖÖĞÎÊ½
+     * å¯¹è¾“å…¥çš„å­—ç¬¦ä¸²è¿›è¡ŒURLç¼–ç , å³è½¬æ¢ä¸º%20è¿™ç§å½¢å¼
      * 
-     * @param input Ô­ÎÄ
-     * @return URL±àÂë. Èç¹û±àÂëÊ§°Ü, Ôò·µ»ØÔ­ÎÄ
+     * @param input åŸæ–‡
+     * @return URLç¼–ç . å¦‚æœç¼–ç å¤±è´¥, åˆ™è¿”å›åŸæ–‡
      */
     public static String encode(String input) {
         if (input == null) {

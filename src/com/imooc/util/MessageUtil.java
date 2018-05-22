@@ -48,7 +48,7 @@ public class MessageUtil {
     public static final String EVENT_SCANCODE_PUSH = "scancode_push";
 	
 	/**
-     * xml×ªmap
+     * xmlè½¬map
      * @param req
      * @return
      * @throws IOException
@@ -58,10 +58,10 @@ public class MessageUtil {
 	public static Map<String,String> xmlToMap(HttpServletRequest req) throws IOException, DocumentException {
         HashMap<String, String> map = new HashMap<String, String>();
         SAXReader saxReader = new SAXReader();
-        ServletInputStream inputStream = req.getInputStream();        //»ñÈ¡ÊäÈëÁ÷
+        ServletInputStream inputStream = req.getInputStream();        //è·å–è¾“å…¥æµ
         Document document = saxReader.read(inputStream);
 
-        Element rootElement = document.getRootElement();     //»ñÈ¡xml¸ùÔªËØ
+        Element rootElement = document.getRootElement();     //è·å–xmlæ ¹å…ƒç´ 
 
         List <Element> elements = rootElement.elements();
 
@@ -73,18 +73,18 @@ public class MessageUtil {
     }
     
     /**
-     * ÎÄ±¾ÏûÏ¢¶ÔÏó×ª»»Îªxml
+     * æ–‡æœ¬æ¶ˆæ¯å¯¹è±¡è½¬æ¢ä¸ºxml
      * @param textMessage
      * @return
      */
     public static String textMessageToXml (TextMessage textMessage){
         XStream xStream = new XStream();
-        xStream.alias("xml",textMessage.getClass());    //½«¸ù½Úµã×ª»»Îªxml  <com.imooc.entity.TextMessage>
+        xStream.alias("xml",textMessage.getClass());    //å°†æ ¹èŠ‚ç‚¹è½¬æ¢ä¸ºxml  <com.imooc.entity.TextMessage>
         return xStream.toXML(textMessage);
     }
     
     /**
-	 * ×é×°ÎÄ±¾ÏûÏ¢
+	 * ç»„è£…æ–‡æœ¬æ¶ˆæ¯
 	 * @param toUser
 	 * @param fromUser
 	 * @param content
@@ -102,46 +102,46 @@ public class MessageUtil {
     
     
     /**
-     * Ö÷²Ëµ¥
+     * ä¸»èœå•
      * @return
      */
     public static String mainMenu(){
 		StringBuffer sb = new StringBuffer();
-		sb.append("»¶Ó­¹âÁÙ,¿Í¹ÙÀïÃæÇë\n");
-		sb.append("1¡¢ÎÄ±¾ĞÅÏ¢\n");
-		sb.append("2¡¢Í¼ÎÄÏûÏ¢\n");
-		sb.append("3¡¢Í¼Æ¬ÏûÏ¢\n");
-		sb.append("4¡¢ÒôÀÖÏûÏ¢\n");
-		sb.append("5¡¢·­Òë\n");
-		sb.append("»Ø¸´£¿ÏÔÊ¾´Ë²Ëµ¥");
+		sb.append("æ¬¢è¿å…‰ä¸´,å®¢å®˜é‡Œé¢è¯·\n");
+		sb.append("1ã€æ–‡æœ¬ä¿¡æ¯\n");
+		sb.append("2ã€å›¾æ–‡æ¶ˆæ¯\n");
+		sb.append("3ã€å›¾ç‰‡æ¶ˆæ¯\n");
+		sb.append("4ã€éŸ³ä¹æ¶ˆæ¯\n");
+		sb.append("5ã€ç¿»è¯‘\n");
+		sb.append("å›å¤ï¼Ÿæ˜¾ç¤ºæ­¤èœå•");
 		return sb.toString();
     }
     
     public static String firstMenu(){
 		StringBuffer sb = new StringBuffer();
-		sb.append("ÄãºÃ!Hello World");
+		sb.append("ä½ å¥½!Hello World");
 		return sb.toString();
     }
     
     public static String secondMenu(){
 		StringBuffer sb = new StringBuffer();
-		sb.append("»¶Ó­Ô¶·½¿ÍÈËµÄµ½À´...");
+		sb.append("æ¬¢è¿è¿œæ–¹å®¢äººçš„åˆ°æ¥...");
 		return sb.toString();
     }
     
     public static String transMenu(){
     	StringBuffer sb = new StringBuffer();
-		sb.append("´Ê×é·­ÒëÊ¹ÓÃÖ¸ÄÏ\n");
-		sb.append("Ê¹ÓÃÊ¾Àı£º\n");
-		sb.append("·­Òë×ãÇò\n");
-		sb.append("»Ø¸´£¿ÏÔÊ¾Ö÷²Ëµ¥");
+		sb.append("è¯ç»„ç¿»è¯‘ä½¿ç”¨æŒ‡å—\n");
+		sb.append("ä½¿ç”¨ç¤ºä¾‹ï¼š\n");
+		sb.append("ç¿»è¯‘è¶³çƒ\n");
+		sb.append("å›å¤ï¼Ÿæ˜¾ç¤ºä¸»èœå•");
 		return sb.toString();
     }
     
     
     
     /**
-	 * Í¼ÎÄÏûÏ¢×ªÎªxml
+	 * å›¾æ–‡æ¶ˆæ¯è½¬ä¸ºxml
 	 * @param newsMessage
 	 * @return
 	 */
@@ -153,7 +153,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * Í¼ÎÄÏûÏ¢µÄ×é×°
+	 * å›¾æ–‡æ¶ˆæ¯çš„ç»„è£…
 	 * @param toUserName
 	 * @param fromUserName
 	 * @return
@@ -164,10 +164,10 @@ public class MessageUtil {
 		NewsMessage newsMessage = new NewsMessage();
 		
 		News news = new News();
-		news.setTitle("Ä½¿ÎÍø½éÉÜ");
-		news.setDescription("Ä½¿ÎÍøÊÇ´¹Ö±µÄ»¥ÁªÍøIT¼¼ÄÜÃâ·ÑÑ§Ï°ÍøÕ¾¡£ÒÔ¶À¼ÒÊÓÆµ½Ì³Ì¡¢ÔÚÏß±à³Ì¹¤¾ß¡¢Ñ§Ï°¼Æ»®¡¢ÎÊ´ğÉçÇøÎªºËĞÄÌØÉ«¡£ÔÚÕâÀï£¬Äã¿ÉÒÔÕÒµ½×îºÃµÄ»¥ÁªÍø¼¼ÊõÅ£ÈË£¬Ò²¿ÉÒÔÍ¨¹ıÃâ·ÑµÄÔÚÏß¹«¿ªÊÓÆµ¿Î³ÌÑ§Ï°¹úÄÚÁìÏÈµÄ»¥ÁªÍøIT¼¼Êõ¡£Ä½¿ÎÍø¿Î³Ìº­¸ÇÇ°¶Ë¿ª·¢¡¢PHP¡¢Html5¡¢Android¡¢iOS¡¢SwiftµÈITÇ°ÑØ¼¼ÊõÓïÑÔ£¬°üÀ¨»ù´¡¿Î³Ì¡¢ÊµÓÃ°¸Àı¡¢¸ß¼¶·ÖÏíÈı´óÀàĞÍ£¬ÊÊºÏ²»Í¬½×¶ÎµÄÑ§Ï°ÈËÈº¡£");
-		news.setPicUrl(WeixinUtil.DOMAIN_NAME +"Weixin/image/imooc.jpg");       //Í¼Æ¬Á´½Ó
-		news.setUrl("www.imooc.com");              //µã»÷Í¼ÎÄÏûÏ¢Ìø×ªÁ´½Ó
+		news.setTitle("æ…•è¯¾ç½‘ä»‹ç»");
+		news.setDescription("æ…•è¯¾ç½‘æ˜¯å‚ç›´çš„äº’è”ç½‘ITæŠ€èƒ½å…è´¹å­¦ä¹ ç½‘ç«™ã€‚ä»¥ç‹¬å®¶è§†é¢‘æ•™ç¨‹ã€åœ¨çº¿ç¼–ç¨‹å·¥å…·ã€å­¦ä¹ è®¡åˆ’ã€é—®ç­”ç¤¾åŒºä¸ºæ ¸å¿ƒç‰¹è‰²ã€‚åœ¨è¿™é‡Œï¼Œä½ å¯ä»¥æ‰¾åˆ°æœ€å¥½çš„äº’è”ç½‘æŠ€æœ¯ç‰›äººï¼Œä¹Ÿå¯ä»¥é€šè¿‡å…è´¹çš„åœ¨çº¿å…¬å¼€è§†é¢‘è¯¾ç¨‹å­¦ä¹ å›½å†…é¢†å…ˆçš„äº’è”ç½‘ITæŠ€æœ¯ã€‚æ…•è¯¾ç½‘è¯¾ç¨‹æ¶µç›–å‰ç«¯å¼€å‘ã€PHPã€Html5ã€Androidã€iOSã€Swiftç­‰ITå‰æ²¿æŠ€æœ¯è¯­è¨€ï¼ŒåŒ…æ‹¬åŸºç¡€è¯¾ç¨‹ã€å®ç”¨æ¡ˆä¾‹ã€é«˜çº§åˆ†äº«ä¸‰å¤§ç±»å‹ï¼Œé€‚åˆä¸åŒé˜¶æ®µçš„å­¦ä¹ äººç¾¤ã€‚");
+		news.setPicUrl(WeixinUtil.DOMAIN_NAME +"Weixin/image/imooc.jpg");       //å›¾ç‰‡é“¾æ¥
+		news.setUrl("www.imooc.com");              //ç‚¹å‡»å›¾æ–‡æ¶ˆæ¯è·³è½¬é“¾æ¥
 		 
 		newsList.add(news);
 		
@@ -184,7 +184,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * Í¼Æ¬ÏûÏ¢×ªÎªxml
+	 * å›¾ç‰‡æ¶ˆæ¯è½¬ä¸ºxml
 	 * @param imageMessage
 	 * @return
 	 */
@@ -195,7 +195,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * ×é×°Í¼Æ¬ÏûÏ¢
+	 * ç»„è£…å›¾ç‰‡æ¶ˆæ¯
 	 * @param toUserName
 	 * @param fromUserName
 	 * @return
@@ -214,7 +214,7 @@ public class MessageUtil {
 		return message;
 	}
 	/**
-	 * »Ø¸´Í¼Æ¬ÏûÏ¢
+	 * å›å¤å›¾ç‰‡æ¶ˆæ¯
 	 * @param toUserName
 	 * @param fromUserName
 	 * @return
@@ -234,7 +234,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * ÓïÒôÏûÏ¢×ªÎªxml
+	 * è¯­éŸ³æ¶ˆæ¯è½¬ä¸ºxml
 	 * @param imageMessage
 	 * @return
 	 */
@@ -245,7 +245,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * »Ø¸´ÓïÒôÏûÏ¢
+	 * å›å¤è¯­éŸ³æ¶ˆæ¯
 	 * @param toUserName
 	 * @param fromUserName
 	 * @return
@@ -265,7 +265,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * ÒôÀÖÏûÏ¢×ªÎªxml
+	 * éŸ³ä¹æ¶ˆæ¯è½¬ä¸ºxml
 	 * @param musicMessage
 	 * @return
 	 */
@@ -276,7 +276,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * ×é×°ÒôÀÖÏûÏ¢
+	 * ç»„è£…éŸ³ä¹æ¶ˆæ¯
 	 * @param toUserName
 	 * @param fromUserName
 	 * @return
@@ -286,7 +286,7 @@ public class MessageUtil {
 		Music music = new Music();
 		music.setThumbMediaId("oeVOCzVQwF0ChgtJYRsKqX0wcyP44Q6S98oWhN7TMCr9jL0GbEvXekF1MjNcJ6Hl");
 		music.setTitle("see you again");
-		music.setDescription("ËÙ7Æ¬Î²Çú");
+		music.setDescription("é€Ÿ7ç‰‡å°¾æ›²");
 		music.setMusicUrl(WeixinUtil.DOMAIN_NAME + "resource/See You Again.mp3");
 		music.setHQMusicUrl(WeixinUtil.DOMAIN_NAME + "resource/See You Again.mp3");
 		
@@ -301,7 +301,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * ×é×°Èº·¢Í¼Æ¬ÏûÏ¢
+	 * ç»„è£…ç¾¤å‘å›¾ç‰‡æ¶ˆæ¯
 	 * @return
 	 */
 	public static String initMassImage(String mediaId) {
@@ -326,7 +326,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * ×é×°Èº·¢ÎÄ±¾ÏûÏ¢
+	 * ç»„è£…ç¾¤å‘æ–‡æœ¬æ¶ˆæ¯
 	 * @return
 	 */
 	public static String initMassText() {
@@ -339,7 +339,7 @@ public class MessageUtil {
 		massText.setMsgtype("text");
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("content", "Hello,<a href='https://www.baidu.com'>µãÎÒÈ¥°Ù¶ÈÁË</a>");
+		map.put("content", "Hello,<a href='https://www.baidu.com'>ç‚¹æˆ‘å»ç™¾åº¦äº†</a>");
 		massText.setText(map);
         
 		Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();

@@ -38,7 +38,7 @@ import com.imooc.trans.TransResult;
 
 
 /**
- * Î¢ĞÅ¹¤¾ßÀà
+ * å¾®ä¿¡å·¥å…·ç±»
  * @author Stephen
  *
  */
@@ -62,24 +62,24 @@ public class WeixinUtil {
 	private static final String USER_INFO = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID";
 	
 	
-	//ÍâÍøÓ³ÉäÓòÃû
-	public static final String DOMAIN_NAME = "http://wxpub.free.ngrok.cc/Weixin/";
-//	public static final String DOMAIN_NAME = "http://wx.com.tunnel.qydev.com/Weixin/";
+	//å¤–ç½‘æ˜ å°„åŸŸå
+//	public static final String DOMAIN_NAME = "http://wxpub.free.ngrok.cc/Weixin/";
+	public static final String DOMAIN_NAME = "http://wx.com.tunnel.qydev.com/Weixin/";
 		
-	//¸ù¾İopenIDÈº·¢
+	//æ ¹æ®openIDç¾¤å‘
 	public static final String Mass_Image_URL = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token=ACCESS_TOKEN";
 	
-	//ÉÏ´«Í¼ÎÄÏûÏ¢ÄÚµÄÍ¼Æ¬»ñÈ¡URL
+	//ä¸Šä¼ å›¾æ–‡æ¶ˆæ¯å†…çš„å›¾ç‰‡è·å–URL
 	public static final String Upload_Mass_Image = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=ACCESS_TOKEN";
 	
 	/*
-	 * °Ù¶È·­Òë
+	 * ç™¾åº¦ç¿»è¯‘
 	 */
 	private static final String APP_ID = "20171112000094618";
     private static final String SECURITY_KEY = "HdCwLuplNj8xnavViq4w";
 
 	/**
-	 * getÇëÇó
+	 * getè¯·æ±‚
 	 * @param url
 	 * @return
 	 * @throws ParseException
@@ -99,7 +99,7 @@ public class WeixinUtil {
 	}
 	
 	/**
-	 * POSTÇëÇó
+	 * POSTè¯·æ±‚
 	 * @param url
 	 * @param outStr
 	 * @return
@@ -110,7 +110,7 @@ public class WeixinUtil {
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpPost httpost = new HttpPost(url);
 		JSONObject jsonObject = null;
-		httpost.setEntity(new StringEntity(outStr,"UTF-8"));    //Ìá½»µÄÊı¾İ
+		httpost.setEntity(new StringEntity(outStr,"UTF-8"));    //æäº¤çš„æ•°æ®
 		HttpResponse response = client.execute(httpost);
 		String result = EntityUtils.toString(response.getEntity(),"UTF-8");
 		jsonObject = JSONObject.fromObject(result);
@@ -118,7 +118,7 @@ public class WeixinUtil {
 	}
 	
 	/**
-	 * ÎÄ¼şÉÏ´«
+	 * æ–‡ä»¶ä¸Šä¼ 
 	 * @param filePath
 	 * @param accessToken
 	 * @param type
@@ -131,26 +131,26 @@ public class WeixinUtil {
 	public static String upload(String filePath, String accessToken,String type) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException {
 		File file = new File(filePath);
 		if (!file.exists() || !file.isFile()) {
-			throw new IOException("ÎÄ¼ş²»´æÔÚ");
+			throw new IOException("æ–‡ä»¶ä¸å­˜åœ¨");
 		}
 
 		String url = UPLOAD_URL.replace("ACCESS_TOKEN", accessToken).replace("TYPE",type);
 //		String url = Upload_Mass_Image.replace("ACCESS_TOKEN", accessToken);
 		
 		URL urlObj = new URL(url);
-		//Á¬½Ó
+		//è¿æ¥
 		HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
 
 		con.setRequestMethod("POST"); 
 		con.setDoInput(true);
 		con.setDoOutput(true);
-		con.setUseCaches(false);       //ºöÂÔ»º´æ
+		con.setUseCaches(false);       //å¿½ç•¥ç¼“å­˜
 
-		//ÉèÖÃÇëÇóÍ·ĞÅÏ¢
+		//è®¾ç½®è¯·æ±‚å¤´ä¿¡æ¯
 		con.setRequestProperty("Connection", "Keep-Alive");
 		con.setRequestProperty("Charset", "UTF-8");
 
-		//ÉèÖÃ±ß½ç
+		//è®¾ç½®è¾¹ç•Œ
 		String BOUNDARY = "----------" + System.currentTimeMillis();
 		con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
 
@@ -163,13 +163,13 @@ public class WeixinUtil {
 
 		byte[] head = sb.toString().getBytes("utf-8");
 
-		//»ñµÃÊä³öÁ÷
+		//è·å¾—è¾“å‡ºæµ
 		OutputStream out = new DataOutputStream(con.getOutputStream());
-		//Êä³ö±íÍ·
+		//è¾“å‡ºè¡¨å¤´
 		out.write(head);
 
-		//ÎÄ¼şÕıÎÄ²¿·Ö
-		//°ÑÎÄ¼şÒÑÁ÷ÎÄ¼şµÄ·½Ê½ ÍÆÈëµ½urlÖĞ
+		//æ–‡ä»¶æ­£æ–‡éƒ¨åˆ†
+		//æŠŠæ–‡ä»¶å·²æµæ–‡ä»¶çš„æ–¹å¼ æ¨å…¥åˆ°urlä¸­
 		DataInputStream in = new DataInputStream(new FileInputStream(file));
 		int bytes = 0;
 		byte[] bufferOut = new byte[1024];
@@ -178,8 +178,8 @@ public class WeixinUtil {
 		}
 		in.close();
 
-		//½áÎ²²¿·Ö
-		byte[] foot = ("\r\n--" + BOUNDARY + "--\r\n").getBytes("utf-8");//¶¨Òå×îºóÊı¾İ·Ö¸ôÏß
+		//ç»“å°¾éƒ¨åˆ†
+		byte[] foot = ("\r\n--" + BOUNDARY + "--\r\n").getBytes("utf-8");//å®šä¹‰æœ€åæ•°æ®åˆ†éš”çº¿
 
 		out.write(foot);
 
@@ -190,7 +190,7 @@ public class WeixinUtil {
 		BufferedReader reader = null;
 		String result = null;
 		try {
-			//¶¨ÒåBufferedReaderÊäÈëÁ÷À´¶ÁÈ¡URLµÄÏìÓ¦
+			//å®šä¹‰BufferedReaderè¾“å…¥æµæ¥è¯»å–URLçš„å“åº”
 			reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
@@ -219,7 +219,7 @@ public class WeixinUtil {
 	}
 	
 	/**
-	 * »ñÈ¡accessToken
+	 * è·å–accessToken
 	 * @return
 	 * @throws ParseException
 	 * @throws IOException
@@ -236,19 +236,19 @@ public class WeixinUtil {
 	}
 	
 	/**
-	 * ×é×°²Ëµ¥
+	 * ç»„è£…èœå•
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
 	public static Menu initMenu() throws UnsupportedEncodingException{
 		Menu menu = new Menu();
 		ClickButton button11 = new ClickButton();
-		button11.setName("click²Ëµ¥");
+		button11.setName("clickèœå•");
 		button11.setType("click");
 		button11.setKey("11");
 		
 		ViewButton button21 = new ViewButton();
-		button21.setName("view²Ëµ¥");
+		button21.setName("viewèœå•");
 		button21.setType("view");
 //		button21.setUrl("http://www.imooc.com");
 //		button21.setUrl("http://wx.com.ngrok.xiaomiqiu.cn/Weixin/wxjs_sdk");
@@ -262,17 +262,17 @@ public class WeixinUtil {
 		button21.setUrl(url);
 		
 		ClickButton button31 = new ClickButton();
-		button31.setName("É¨ÂëÊÂ¼ş");
+		button31.setName("æ‰«ç äº‹ä»¶");
 		button31.setType("scancode_push");
 		button31.setKey("31");
 		
 		ClickButton button32 = new ClickButton();
-		button32.setName("µØÀíÎ»ÖÃ");
+		button32.setName("åœ°ç†ä½ç½®");
 		button32.setType("location_select");
 		button32.setKey("32");
 		
 		Button button = new Button();
-		button.setName("²Ëµ¥");
+		button.setName("èœå•");
 		button.setSub_button(new Button[]{button31,button32});
 		
 		menu.setButton(new Button[]{button11,button21,button});
@@ -326,7 +326,7 @@ public class WeixinUtil {
 	
 	
 	/**
-	 *  ¸ù¾İcode»ñÈ¡ÓÃ»§µÄopenid
+	 *  æ ¹æ®codeè·å–ç”¨æˆ·çš„openid
 	 * @param code
 	 * @return
 	 * @throws ParseException
@@ -349,7 +349,7 @@ public class WeixinUtil {
 	
 	
 	/**
-	 * ¸ù¾İopenIDÈº·¢
+	 * æ ¹æ®openIDç¾¤å‘
 	 * @param token
 	 * @param outStr
 	 * @return
@@ -365,7 +365,7 @@ public class WeixinUtil {
 	}
 	
 	/**
-	 * Èº·¢postÇëÇó
+	 * ç¾¤å‘postè¯·æ±‚
 	 * @param url
 	 * @param outStr
 	 * @return

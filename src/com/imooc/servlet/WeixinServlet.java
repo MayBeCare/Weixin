@@ -38,11 +38,11 @@ public class WeixinServlet extends HttpServlet{
 	
 	
 	/*
-	 * ÔÚÈ·±£¿ª·¢Ä£Ê½´ò¿ªµÄÇé¿öÏÂ£¬Î¢ĞÅºóÌ¨»á°ÑÓÃ»§ÏûÏ¢·¢µ½ÎÒÃÇµÄ·şÎñÆ÷ÉÏ£¬Ò²¾ÍÊÇÎÒÃÇÎ¢ĞÅºóÌ¨ÅäÖÃµÄURL
-	 * Î¢ĞÅºóÌ¨·¢ËÍÏûÏ¢ÊÇÒ»¸öPOSTÇëÇó£¬URL»á´øÉÏsignature¡¢timestamp¡¢nonceÕâ3¸ö²ÎÊı
-	 * ±ê×¼µÄPOST²ÎÊıÊÇ´ÓHTTP BODYÖĞ½âÎöµÄ
+	 * åœ¨ç¡®ä¿å¼€å‘æ¨¡å¼æ‰“å¼€çš„æƒ…å†µä¸‹ï¼Œå¾®ä¿¡åå°ä¼šæŠŠç”¨æˆ·æ¶ˆæ¯å‘åˆ°æˆ‘ä»¬çš„æœåŠ¡å™¨ä¸Šï¼Œä¹Ÿå°±æ˜¯æˆ‘ä»¬å¾®ä¿¡åå°é…ç½®çš„URL
+	 * å¾®ä¿¡åå°å‘é€æ¶ˆæ¯æ˜¯ä¸€ä¸ªPOSTè¯·æ±‚ï¼ŒURLä¼šå¸¦ä¸Šsignatureã€timestampã€nonceè¿™3ä¸ªå‚æ•°
+	 * æ ‡å‡†çš„POSTå‚æ•°æ˜¯ä»HTTP BODYä¸­è§£æçš„
 	 * 
-	 * ÔÚ»Ø¸´µÄXMLÖĞ£¬°Ñ½ÓÊÕµÄToUserNameºÍFromUserName½»»»£¬
+	 * åœ¨å›å¤çš„XMLä¸­ï¼ŒæŠŠæ¥æ”¶çš„ToUserNameå’ŒFromUserNameäº¤æ¢ï¼Œ
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -65,11 +65,11 @@ public class WeixinServlet extends HttpServlet{
 //			System.out.println(picUrl);
 //			System.out.println(mediaId);
 //			System.out.println(format);
-//			System.out.println("ÏûÏ¢ÀàĞÍÎª======>>>>>>>>>>>"+msgType);
-//			System.out.println("ÏûÏ¢ÄÚÈİÎª======>>>>>>>>>>>"+content);
-//			System.out.println("ÏûÏ¢IDÎª======>>>>>>>>>>>"+msgId);
+//			System.out.println("æ¶ˆæ¯ç±»å‹ä¸º======>>>>>>>>>>>"+msgType);
+//			System.out.println("æ¶ˆæ¯å†…å®¹ä¸º======>>>>>>>>>>>"+content);
+//			System.out.println("æ¶ˆæ¯IDä¸º======>>>>>>>>>>>"+msgId);
 			String msg = null;
-			if (MessageUtil.MSGTYPE_TEXT.equals(msgType)) {            //ÎÄ±¾ÏûÏ¢
+			if (MessageUtil.MSGTYPE_TEXT.equals(msgType)) {            //æ–‡æœ¬æ¶ˆæ¯
 				if("1".equals(content)){
 					msg = MessageUtil.initText(toUserName, fromUserName, MessageUtil.firstMenu());
 				}else if("2".equals(content)){
@@ -80,54 +80,54 @@ public class WeixinServlet extends HttpServlet{
 					msg = MessageUtil.initMusicMessage(toUserName, fromUserName);
 				}else if("5".equals(content)){
 					msg = MessageUtil.initText(toUserName, fromUserName, MessageUtil.transMenu());
-				}else if(content.startsWith("·­Òë")){
-					String word = content.replaceAll("^·­Òë", "").trim();
+				}else if(content.startsWith("ç¿»è¯‘")){
+					String word = content.replaceAll("^ç¿»è¯‘", "").trim();
 					if("".equals(word)){
 						msg = MessageUtil.initText(toUserName, fromUserName, MessageUtil.transMenu());
 					}else{
 						msg = MessageUtil.initText(toUserName, fromUserName, WeixinUtil.translate(word));
 					}
-				}else if("£¿".equals(content) || "?".equals(content)){
+				}else if("ï¼Ÿ".equals(content) || "?".equals(content)){
 					msg = MessageUtil.initText(toUserName, fromUserName, MessageUtil.mainMenu());
 				}else{
-					msg = MessageUtil.initText(toUserName, fromUserName, "ÊäÈëµÄÖ¸ÁîÎŞĞ§Å¶(¡ä¡Ğ`)");
+					msg = MessageUtil.initText(toUserName, fromUserName, "è¾“å…¥çš„æŒ‡ä»¤æ— æ•ˆå“¦(â€²âŒ’`)");
                 }
 				/*TextMessage textMessage = new TextMessage();
 				textMessage.setToUserName(fromUserName);
 				textMessage.setFromUserName(toUserName);
 				textMessage.setMsgType("text");
 				textMessage.setCreateTime(new Date().getTime());
-				textMessage.setContent("Äú·¢ËÍµÄÏûÏ¢Îª:" + content);
+				textMessage.setContent("æ‚¨å‘é€çš„æ¶ˆæ¯ä¸º:" + content);
 				msg = MessageUtil.textMessageToXml(textMessage);*/
 				
-			}else if(MessageUtil.MSGTYPE_EVENT.equals(msgType)){   //Èç¹ûÊÇÊÂ¼ş
-				String eventType = map.get("Event");//ÊÂ¼şÀàĞÍ
-				if(MessageUtil.EVENT_SUBSCRIBE.equals(eventType)){     //¹Ø×¢
+			}else if(MessageUtil.MSGTYPE_EVENT.equals(msgType)){   //å¦‚æœæ˜¯äº‹ä»¶
+				String eventType = map.get("Event");//äº‹ä»¶ç±»å‹
+				if(MessageUtil.EVENT_SUBSCRIBE.equals(eventType)){     //å…³æ³¨
 					msg = MessageUtil.initText(toUserName, fromUserName, MessageUtil.mainMenu());
-                }else if(MessageUtil.EVENT_CLICK.equals(eventType)){   //µã»÷ÊÂ¼ş
+                }else if(MessageUtil.EVENT_CLICK.equals(eventType)){   //ç‚¹å‡»äº‹ä»¶
  					msg = MessageUtil.initText(toUserName, fromUserName, MessageUtil.mainMenu());
- 				}else if(MessageUtil.EVENT_VIEW.equals(eventType)){   // Ìø×ªURLÓÃ»§µã»÷view
+ 				}else if(MessageUtil.EVENT_VIEW.equals(eventType)){   // è·³è½¬URLç”¨æˆ·ç‚¹å‡»view
 					String url = map.get("EventKey");
 					
 //					System.out.println("======<<<<<<<<<>>>>>>>>>" + url);
 					msg = MessageUtil.initText(toUserName, fromUserName, url);
 					
-				}else if(MessageUtil.EVENT_SCANCODE_PUSH.equals(eventType)){ //É¨ÂëÊÂ¼ş
+				}else if(MessageUtil.EVENT_SCANCODE_PUSH.equals(eventType)){ //æ‰«ç äº‹ä»¶
 					String key = map.get("EventKey");
 					msg = MessageUtil.initText(toUserName, fromUserName, key);
 				}
-			}else if(MessageUtil.MSGTYPE_LOCATION.equals(msgType)){      //Î»ÖÃ
+			}else if(MessageUtil.MSGTYPE_LOCATION.equals(msgType)){      //ä½ç½®
 				String label = map.get("Label");
 				msg = MessageUtil.initText(toUserName, fromUserName,label);
-			}else if(MessageUtil.MSGTYPE_IMAGE.equals(msgType)){    //Í¼Æ¬ÏûÏ¢
+			}else if(MessageUtil.MSGTYPE_IMAGE.equals(msgType)){    //å›¾ç‰‡æ¶ˆæ¯
 				String imageMediaId = map.get("MediaId");
 				msg = MessageUtil.replyImageMessage(toUserName, fromUserName,imageMediaId);
-			}else if(MessageUtil.MSGTYPE_VOICE.equals(msgType)){    //ÓïÒôÏûÏ¢
+			}else if(MessageUtil.MSGTYPE_VOICE.equals(msgType)){    //è¯­éŸ³æ¶ˆæ¯
 				String voiceMediaId = map.get("MediaId");
 				msg = MessageUtil.replyVoiceMessage(toUserName, fromUserName,voiceMediaId);
 			}
 //			System.out.println(msg);
-			writer.print(msg);            //·µ»Ø¸øÎ¢ĞÅºóÌ¨
+			writer.print(msg);            //è¿”å›ç»™å¾®ä¿¡åå°
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} finally {
