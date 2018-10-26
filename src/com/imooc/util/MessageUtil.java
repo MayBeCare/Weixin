@@ -57,17 +57,39 @@ public class MessageUtil {
     @SuppressWarnings("unchecked")
 	public static Map<String,String> xmlToMap(HttpServletRequest req) throws IOException, DocumentException {
         HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> mapSon = null;
         SAXReader saxReader = new SAXReader();
         ServletInputStream inputStream = req.getInputStream();        //获取输入流
         Document document = saxReader.read(inputStream);
 
-        Element rootElement = document.getRootElement();     //获取xml根元素
-
-        List <Element> elements = rootElement.elements();
-
-        for (Element el : elements){
-            map.put(el.getName(),el.getText());
+//        Element rootElement = document.getRootElement();     //获取xml根元素
+//
+//        List <Element> elements = rootElement.elements();
+//
+//        for (Element el : elements){
+//            map.put(el.getName(),el.getText());
+//        }
+        
+        Element root = document.getRootElement();
+        //获取根元素的所有子节点
+        List<Element> list = root.elements();
+        //遍历list
+        for(Element element:list){
+            //遍历的结果放到集合中
+//            map.put(element.getName(), element.getText());
+            List<Element> elementsSon = element.elements();
+            if(elementsSon.size() > 0){
+            	mapSon = new HashMap<String, String>();
+            	for(Element el:elementsSon){
+            		//遍历的结果放到集合中
+            		mapSon.put(el.getName(), el.getText());
+            	}
+            	map.put(element.getName(), mapSon.toString());
+            }else{
+            	map.put(element.getName(), element.getText());
+            }
         }
+        
         inputStream.close();
         return map;
     }
