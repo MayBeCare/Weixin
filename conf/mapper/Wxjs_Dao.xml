@@ -10,13 +10,13 @@
        select * 
        from card_record 
        where clock_date = #{nowDate}
-       and id = #{id}
+       and user_id = #{id}
     </select>
     
     <select id="queryRecord" resultType="Wxjs_Record" >
         SELECT *
         FROM card_record  r
-        LEFT JOIN card_user u on r.id = u.usercode
+        LEFT JOIN card_user u on r.user_id = u.usercode
         where r.clock_date like '${clockDate}%'
         and u.openid = #{openId}
         ORDER BY clock_date desc
@@ -24,17 +24,17 @@
     
     <insert id="addNewRecord" parameterType="Wxjs_Record">
        insert into card_record
-       (id,clock_date,start_time,end_time)
+       (user_id,clock_date,start_time,end_time)
        values
-       (#{id},#{clockDate},#{startTime},#{endTime})
+       (#{userId},#{clockDate},#{startTime},#{endTime})
     
     </insert>
     
     <update id="updateRecord" parameterType="Wxjs_Record">
        update card_record 
        set end_time = #{endTime}
-       where clock_date = #{clockDate}
-       and id = #{id}
+       where user_id = #{userId}
+       and clock_date = #{clockDate}
     </update>
     
     <select id="findAddress" resultType="Wxjs_Address">

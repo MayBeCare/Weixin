@@ -6,18 +6,19 @@ package com.imooc.entity;
  */
 public class Wxjs_Record {
 	
-    private String id;
+    private String userId;
     private String clockDate;
     private String startTime;
     private String endTime;
 	
     private String userName;
     
-	public String getId() {
-		return id;
+	
+	public String getUserId() {
+		return userId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getClockDate() {
 		return clockDate;

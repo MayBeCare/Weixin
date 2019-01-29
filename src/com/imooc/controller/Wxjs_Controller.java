@@ -86,7 +86,7 @@ public class Wxjs_Controller {
         
         if(wxjs_Record == null){                         //当前未打卡
         	newStartRecord = new Wxjs_Record();
-        	newStartRecord.setId(user.getUserCode());
+        	newStartRecord.setUserId(user.getUserCode());
         	newStartRecord.setClockDate(nowDate);
         	/*获取当前打卡具体时间*/
         	DateFormat startTime=new SimpleDateFormat("HH:mm:ss");  
@@ -98,7 +98,7 @@ public class Wxjs_Controller {
         	wxjs_Service.addNewRecord(newStartRecord);
         }else{                                               //当前已打卡，则更新终止打卡时间
         	newEndRecord = new Wxjs_Record();
-        	newEndRecord.setId(user.getUserCode());
+        	newEndRecord.setUserId(user.getUserCode());
         	newEndRecord.setClockDate(nowDate);
         	/*获取当前时间*/
         	DateFormat endTime=new SimpleDateFormat("HH:mm:ss");  
@@ -169,8 +169,6 @@ public class Wxjs_Controller {
 		list.add(key);
 		
 		List<Wxjs_Record> Wxjs_List = null;
-		
-//		String id = "13000100";
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		
